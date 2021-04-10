@@ -1,0 +1,49 @@
+
+noplate library
+
+experimental generic type-safe container data structures for C
+
+
+(the need to declare the types upfront would go away with N2366)
+
+
+
+Example 1 (vector of integers)
+
+	vec_decl(int);
+	vec(int)* v = vec_alloc(int);
+
+	vec_push(&v, 1);
+	vec_push(&v, 3);
+
+	vec_access(v, 1)++;
+
+	vec_access(v, 10) = 1;	// run-time error!
+
+	free(v);
+
+
+
+
+
+
+Example 2 (vector of strings)
+
+	vec(string)* s = vec_alloc(string);
+
+	vec_push(&s, string_init(" Du!"));
+	vec_push(&s, string_init("Hallo"));
+
+	int cmp2(const string* a, const string* b)
+	{
+		return strcmp(string_cstr(*a), string_cstr(*b));
+	}
+
+	vec_sort(s, cmp2);
+
+	while (0 < vec_length(s))
+		free(vec_pop(&s));
+
+	free(s);
+
+
