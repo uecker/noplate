@@ -21,7 +21,7 @@ static string string_init0(int len, const char c[static len])
 	if (NULL == s)
 		goto err;
 
-	memcpy(string_cstr(s), c, len);
+	memcpy(vec_array(s), c, len);
 	vec_access(s, len) = '\0';
 
 err:

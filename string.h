@@ -12,7 +12,7 @@ vec_decl(char);
 
 typedef vec(char)* string;
 
-#define string_check(x) ({ string __x = (x); CHECK('\0' == vec_array(__x)[vec_length(__x) - 1]); __x; })
+#define string_check(x) ({ string __x = (x); CHECK('\0' == vec_array(__x)[string_length(__x)]); __x; })
 
 #define string_cstr(x) (vec_array(string_check(x)))
 
