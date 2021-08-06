@@ -53,10 +53,10 @@ typedef int vec_size_t;
 
 #if 0
 #define vec_array(T) \
-({									\
+(*({									\
  	auto __T = (T);							\
 	(vec_eltype(__T)(*)[vec_length(__T)])((T)->data);		\
-})
+}))
 #else
 // work around a compiler bug
 // GCC: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91038
