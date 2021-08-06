@@ -41,6 +41,14 @@ typedef int vec_size_t;
 	*__Ta;								\
 })
 
+#define vec_calloc_n(T, M) \
+({									\
+	vec_size_t __Na = (M);						\
+	vec(T)* __t = calloc(1, sizeof(vec(T)) + __Na * sizeof(T));	\
+	if (__t) __t->N = __Na;						\
+	__t;								\
+})
+
 #define vec_alloc_n(T, M) \
 ({									\
 	vec_size_t __Na = (M);						\
