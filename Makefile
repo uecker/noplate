@@ -2,8 +2,13 @@
 # All rights reserved. Use of this source code is governed by
 # a BSD-style license which can be found in the LICENSE file.
 
-CFLAGS = -O3 -g -std=gnu17 -Wall -Wextra -fsanitize=bounds,null -fsanitize-undefined-trap-on-error -D_GNU_SOURCE
-CC = gcc
+CFLAGS = -O2 -g -std=gnu17 -Wall -Wextra -fsanitize=bounds,null -fsanitize-undefined-trap-on-error -D_GNU_SOURCE
+
+ifeq ($(TAGCOMPAT),1)
+CFLAGS += -DTAGCOMPAT -ftag-compat
+endif
+
+CC ?= gcc
 SRCS = vec.c list.c string.c
 
 .INTERMEDIATE: $(SRCS:.c=.o)
