@@ -2,9 +2,9 @@
 # All rights reserved. Use of this source code is governed by
 # a BSD-style license which can be found in the LICENSE file.
 
-CFLAGS = -O3 -g -std=gnu17 -Wall -Wextra -fsanitize=bounds,null -fsanitize-undefined-trap-on-error -D_GNU_SOURCE
+CFLAGS = -O3 -g -std=gnu17 -Wall -Wextra -fsanitize=bounds,null -fsanitize-undefined-trap-on-error -D_GNU_SOURCE -DTAGCOMPAT -ftag-compat
 CC = gcc
-SRCS = vec.c list.c string.c
+SRCS = vec.c list.c string.c nat.c
 
 .INTERMEDIATE: $(SRCS:.c=.o)
 

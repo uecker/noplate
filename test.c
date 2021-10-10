@@ -13,11 +13,12 @@
 #include "list.h"
 
 
+#ifndef TAGCOMPAT
 vec_decl(int);
 vec_decl(string);
 list_decl(int);
 list_decl(string);
-
+#endif
 
 
 int main()

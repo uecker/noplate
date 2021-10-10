@@ -12,8 +12,13 @@
 // I am happy with int at the moment.
 typedef int vec_size_t;
 
+#ifdef TAGCOMPAT
+#define vec(T) struct vec_ ## T { vec_size_t N; T data[]; }
+#define vec_decl(T)
+#else
 #define vec(T) struct vec_ ## T
 #define vec_decl(T) vec(T) { vec_size_t N; T data[]; }
+#endif
 
 #define vec_eltype(T) typeof((T)->data[0])
 #define vec_length(T) ((T)->N)
