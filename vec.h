@@ -64,7 +64,11 @@ typedef int vec_size_t;
 
 #define vec_alloc(T) (vec_alloc_n(T, 0))
 
-#if 0
+#ifndef GCC_VERSION
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#endif
+
+#if (GCC_VERSION >= 110300) || defined __clang__
 #define vec_array(T) \
 (*({									\
  	auto __T = (T);							\
