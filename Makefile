@@ -9,7 +9,7 @@ CFLAGS += -DTAGCOMPAT -ftag-compat
 endif
 
 CC ?= gcc
-SRCS = vec.c list.c string.c
+SRCS = vec.c list.c string.c nat.c
 
 .INTERMEDIATE: $(SRCS:.c=.o)
 

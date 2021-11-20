@@ -11,6 +11,7 @@
 #include "string.h"
 #include "vec.h"
 #include "list.h"
+#include "nat.h"
 
 
 #ifndef TAGCOMPAT
@@ -105,6 +106,22 @@ int main()
 		free(vec_pop(&s));
 
 	free(s);
+
+
+	nat a = NAT(3000);
+	nat b = NAT(1 << 20);
+
+	nat c = nat_mul(a, b);
+	nat d = nat_mul(c, b);
+	nat e = nat_add(d, a);
+
+	printf("%s\n", string_cstr(nat_2string(e)));
+
+	free(a);
+	free(b);
+	free(c);
+	free(d);
+	free(e);
 }
 
 
