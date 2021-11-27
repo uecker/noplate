@@ -9,19 +9,17 @@
 #include "core.h"
 
 
-// I am happy with int at the moment.
-typedef int vec_size_t;
 
 #ifdef TAGCOMPAT
-#define vec(T) struct vec_ ## T { vec_size_t N; T data[]; }
+#define vec(T) struct vec_ ## T { ssize_t N; T data[]; }
 #define vec_decl(T)
 #else
 #define vec(T) struct vec_ ## T
-#define vec_decl(T) vec(T) { vec_size_t N; T data[]; }
+#define vec_decl(T) vec(T) { ssize_t N; T data[]; }
 #endif
 
 #define vec_eltype(T) typeof((T)->data[0])
-#define vec_length(T) ((T)->N)
+#define vec_length(T) ((size_t)((T)->N))
 
 
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
@@ -42,7 +40,7 @@ typedef int vec_size_t;
 
 #define vec_calloc_n(T, M) \
 ({									\
-	vec_size_t __Na = (M);						\
+	ssize_t __Na = (M);						\
 	vec(T)* __t = calloc(1, sizeof(vec(T)) + __Na * sizeof(T));	\
 	if (__t) __t->N = __Na;						\
 	__t;								\
@@ -50,7 +48,7 @@ typedef int vec_size_t;
 
 #define vec_alloc_n(T, M) \
 ({									\
-	vec_size_t __Na = (M);						\
+	ssize_t __Na = (M);						\
  	vec(T)* __t = malloc(sizeof(vec(T)) + __Na * sizeof(T));	\
 	if (__t) __t->N = __Na;						\
 	__t;								\
@@ -80,18 +78,18 @@ extern _Thread_local struct vec_a { int N; void* data; } vec_array_tmp;
 }), (vec_eltype(T)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
 #endif
 
-#define vec_access(T4, _i)						\
+#define vec_access(T4, i)						\
 (*({									\
  	auto __T4 = (T4);						\
-	vec_size_t __i = (_i);						\
-	CHECK((0 <= __i) && (__i < vec_length(__T4)));			\
+	ssize_t __i = (i);						\
+	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(__T4)));		\
 	&(vec_array(__T4)[__i]);					\
 }))
 
 #define vec_push(v2, x2) 						\
 ({ 									\
  	auto __T3 = (v2);						\
-	vec_size_t __N = vec_length(*__T3);				\
+	ssize_t __N = vec_length(*__T3);				\
 	NULL_CHECK(vec_realloc(__T3, __N + 1));				\
 	vec_access(*__T3, __N) = (x2);					\
 })
@@ -99,7 +97,7 @@ extern _Thread_local struct vec_a { int N; void* data; } vec_array_tmp;
 #define vec_pop(v2) 							\
 ({ 									\
  	auto __T2 = (v2);						\
-	vec_size_t __N = vec_length(*__T2);				\
+	ssize_t __N = vec_length(*__T2);				\
 	CHECK(0 < __N);							\
 	auto __r = vec_access(*__T2, __N - 1);				\
 	NULL_CHECK(vec_realloc(__T2, __N - 1));				\

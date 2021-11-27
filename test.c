@@ -12,6 +12,7 @@
 #include "vec.h"
 #include "list.h"
 #include "nat.h"
+#include "array.h"
 
 
 #ifndef TAGCOMPAT
@@ -35,7 +36,7 @@ int main()
 	for (int i = 0; i < 5; i++)
 		n = list_node_next(n);
 
-	assert(4 ==  list_node_access(n));
+	assert(4 == list_node_access(n));
 
 	while (!list_empty(&l))
 		printf("%d\n", list_pop(&l));
@@ -85,7 +86,7 @@ int main()
 #endif
 	string ss = NULL_CHECK(string_alloc());
     
-	for (int i = 0; i < vec_length(s); i++) {
+	for (int i = 0; i < (int)vec_length(s); i++) {
 
 		string t = string_concat(ss, vec_access(s, vec_length(s) - 1 - i));
 		free(ss);
@@ -97,7 +98,7 @@ int main()
 
 	printf("%s %d\n", x, vec_access(v, 0));
 
-	assert(vec_length(s) == (int)(sizeof(vec_array(s)) / sizeof(vec_array(s)[0])));
+	assert(vec_length(s) == array_lengthof(vec_array(s)));
 
 	free(v);
 	free(ss);

@@ -12,7 +12,7 @@
 
 
 extern inline string string_alloc(void);
-extern inline int string_length(const string x);
+extern inline size_t string_length(const string x);
 
 static string string_init0(int len, const char c[static len])
 {
@@ -50,8 +50,8 @@ string string_concat(const string a, const string b)
 	if (NULL == x)
 		goto err;
 
-	memcpy(string_cstr(x), string_cstr(a), alen);
-	memcpy(string_cstr(x) + alen, string_cstr(b), blen);
+	memcpy(&vec_access(x, 0), string_cstr(a), alen);
+	memcpy(&vec_access(x, alen), string_cstr(b), blen);
 	vec_access(x, alen + blen) = '\0';
 
 err:

@@ -28,7 +28,7 @@ err:
 	return s;
 }
 
-inline int string_length(const string x)
+inline size_t string_length(const string x)
 {
 	return vec_length(x) - 1;
 }
