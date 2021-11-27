@@ -65,7 +65,7 @@ inline bool list_empty(const struct list* h)
  	auto __L = (l);							\
  	typedef list_node_type(__L) __NT;				\
 									\
-	container_of(__L->list.head, __NT, node);			\
+	containerof(__L->list.head, __NT, node);			\
 })
 
 #define list_node_access(n)	((n)->data)
@@ -74,7 +74,7 @@ inline bool list_empty(const struct list* h)
 	auto __N = (n);							\
 									\
 	(NULL == __N->node.next) ? NULL :				\
-		container_of(__N->node.next, typeof(*__N), node);	\
+		containerof(__N->node.next, typeof(*__N), node);	\
 })
 
 #define list_push(l, v)							\
@@ -99,7 +99,7 @@ inline bool list_empty(const struct list* h)
 		abort();						\
 									\
 	struct list_node* __n = (list_pop)(&__L->list);			\
-	__NT* __n2 = container_of(__n, __NT, node);			\
+	__NT* __n2 = containerof(__n, __NT, node);			\
 	list_eltype(__L) el = __n2->data;				\
  	free(__n2);							\
  	el;								\

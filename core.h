@@ -18,10 +18,16 @@
 #endif
 
 
-#define TYPE_CHECK(T, x)	(1 ? (x) : (T)0)
-#define container_of(x, T, member)	\
+#define TYPE_CHECK(T, x)	(1 ? (x) : (T){0})
+#define containerof(x, T, member)	\
 	((T*)((char*)TYPE_CHECK(typeof(&((T*)0)->member), x) - offsetof(T, member)))
 
+#if 0
+// -fsanitize=bounds,null
+#define CHECK(x)
+#else
+#define CHECK(x) if (!(x)) abort()
+#endif
 
 extern void xfree(const void*);
 

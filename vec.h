@@ -23,12 +23,6 @@ typedef int vec_size_t;
 #define vec_eltype(T) typeof((T)->data[0])
 #define vec_length(T) ((T)->N)
 
-#if 0
-// -fsanitize=bounds,null
-#define CHECK(x)
-#else
-#define CHECK(x) if (!(x)) abort()
-#endif
 
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
 
