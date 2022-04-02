@@ -13,6 +13,7 @@
 #include "list.h"
 #include "nat.h"
 #include "array.h"
+#include "mem.h"
 
 
 #ifndef TAGCOMPAT
@@ -107,6 +108,14 @@ int main()
 		free(vec_pop(&s));
 
 	free(s);
+
+
+	char buf[100];
+
+	poke(&array_slice(buf, 11, 11 + sizeof(int)), 3);
+	int i = peek(int, &array_slice(buf, 11, 11 + sizeof(int)));
+
+	assert(3 == i);
 
 
 	nat a = NAT(3000);
