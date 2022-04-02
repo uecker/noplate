@@ -112,7 +112,7 @@ int main()
 
 	char buf[100];
 
-	poke(&array_slice(buf, 11, 11 + sizeof(int)), 3);
+	poke(int, &array_slice(buf, 11, 11 + sizeof(int)), 3);
 	int i = peek(int, &array_slice(buf, 11, 11 + sizeof(int)));
 
 	assert(3 == i);

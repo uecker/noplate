@@ -16,9 +16,9 @@
        	(_T*)memcpy(&(_T){ 0 }, _ptr, _N);	\
 }))
 
-#define poke(ptr, x)				\
+#define poke(T, ptr, x)				\
 ({						\
- 	auto _x = (x);				\
+ 	T _x = (x);				\
 	enum { _N = sizeof(_x) };		\
 	char (*_ptr)[_N] = (ptr);		\
 	_LDST_MEMCPY;				\
