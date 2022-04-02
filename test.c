@@ -72,7 +72,7 @@ int main()
 #ifndef __clang__
 	int cmp(const int* a, const int* b)
 	{ 
-		return b - a;
+		return *b - *a;
 	}
 
 	vec_sort(v, cmp);
