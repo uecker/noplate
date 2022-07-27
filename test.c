@@ -15,6 +15,7 @@
 #include "nat.h"
 #include "array.h"
 #include "mem.h"
+#include "maybe.h"
 
 
 #ifndef TAGCOMPAT
@@ -25,6 +26,7 @@ view_decl(int);
 view_decl(float);
 list_decl(int);
 list_decl(string_ptr);
+maybe_decl(int);
 #endif
 
 
@@ -161,6 +163,17 @@ int main()
 	int i = peek(int, &array_slice(buf, 11, 11 + sizeof(int)));
 
 	assert(3 == i);
+
+
+	maybe(int) m = maybe_fail(int);
+
+	if (m.ok)
+		printf("not ok: %d\n", maybe_use(m));
+
+	m = maybe_ok(int, 3);
+
+	if (m.ok)
+		printf("ok: %d\n", maybe_use(m));
 
 
 	nat a = NAT(3000);
