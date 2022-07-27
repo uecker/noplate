@@ -16,6 +16,7 @@
 #include "array.h"
 #include "mem.h"
 #include "maybe.h"
+#include "algebraic.h"
 
 
 #ifndef TAGCOMPAT
@@ -27,6 +28,8 @@ view_decl(float);
 list_decl(int);
 list_decl(string_ptr);
 maybe_decl(int);
+typedef product_decl(int, float) product_name(int, float);
+sum_decl(product_name(int, float), string_ptr);
 #endif
 
 
@@ -175,6 +178,17 @@ int main()
 	if (m.ok)
 		printf("ok: %d\n", maybe_use(m));
 
+	auto ifl = product_init(int, float, (3, 0.1));
+	auto si = sum_init(product_name(int, float), string_ptr, ifl);
+
+#ifndef __clang__
+	int add1(product(int, float) ifl) { return product_car(ifl) + 1; }
+	int slen(string_ptr x) { return string_length(x); }
+
+	int si2 = sum_choice(si, add1, slen);
+
+	assert(4 == si2);
+#endif
 
 	nat a = NAT(3000);
 	nat b = NAT(1 << 20);
