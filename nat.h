@@ -1,4 +1,4 @@
-/* Copyright 2021. Martin Uecker
+/* Copyright 2021-2022. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -40,7 +40,7 @@ vec_decl(char);
 typedef vec(char)* string;
 #endif
 
-extern string nat_2string(const nat x);
+extern string* nat_2string(const nat x);
 
 
 #endif // __NAT_H

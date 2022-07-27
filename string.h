@@ -1,4 +1,4 @@
-/* Copyright 2021. Martin Uecker
+/* Copyright 2021-2022. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -10,15 +10,15 @@
 
 vec_decl(char);
 
-typedef vec(char)* string;
+typedef vec(char) string;
 
-#define string_check(x) ({ string __x = (x); CHECK('\0' == vec_array(__x)[string_length(__x)]); __x; })
+#define string_check(x) ({ auto __x = (x); (void)TYPE_CHECK(string*, __x); CHECK('\0' == vec_array(__x)[string_length(__x)]); __x; })
 
 #define string_cstr(x) (vec_array(string_check(x)))
 
-inline string string_alloc(void)
+inline string* string_alloc(void)
 { 
-	string s = vec_alloc(char);
+	string* s = vec_alloc(char);
 
 	if (NULL == s)
 		goto err;
@@ -28,18 +28,18 @@ err:
 	return s;
 }
 
-inline size_t string_length(const string x)
+inline size_t string_length(const string* x)
 {
 	return vec_length(x) - 1;
 }
 
-extern string string_init(const char* c);
+extern string* string_init(const char* c);
 
 #define STRING(x) (string_init(x))
 
-extern string string_dup(const string x);
-extern string string_concat(const string a, const string b);
-extern string string_printf(const char* fmt, ...);
+extern string* string_dup(const string* x);
+extern string* string_concat(const string* a, const string* b);
+extern string* string_printf(const char* fmt, ...);
 
 
 #endif // __STRING_H

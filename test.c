@@ -19,18 +19,19 @@
 
 #ifndef TAGCOMPAT
 vec_decl(int);
-vec_decl(string);
+typedef string* string_ptr;
+vec_decl(string_ptr);
 view_decl(int);
 view_decl(float);
 list_decl(int);
-list_decl(string);
+list_decl(string_ptr);
 #endif
 
 
 int main()
 {
 	list(int) l = { 0 };
-	list(string) r = { 0 };
+	list(string_ptr) r = { 0 };
 
 	for (int i = 0; i < 10; i++)
 		list_push(&l, i);
@@ -53,7 +54,7 @@ int main()
 
 	while (!list_empty(&r)) {
 
-		string s2 = list_pop(&r);
+		string* s2 = list_pop(&r);
 
 		printf("%s\n", string_cstr(s2));
 
@@ -67,7 +68,7 @@ int main()
 	vec_push(&v, 3);
 	vec_push(&v, 8);
 
-	vec(string)* s = NULL_CHECK(vec_alloc(string));
+	vec(string_ptr)* s = NULL_CHECK(vec_alloc(string_ptr));
 
 	vec_push(&s, string_init(" Du!"));
 	vec_push(&s, string_init("Hallo"));
@@ -102,24 +103,24 @@ int main()
 
 	vec_sort(v, cmp);
 
-	int cmp2(const string* a, const string* b)
+	int cmp2(const string_ptr* a, const string_ptr* b)
 	{ 
 		return strcmp(string_cstr(*a), string_cstr(*b));
 	}
 
 	vec_sort(s, cmp2);
 #endif
-	string ss = NULL_CHECK(string_alloc());
+	string* ss = NULL_CHECK(string_alloc());
     
 	for (int i = 0; i < (int)vec_length(s); i++) {
 
-		string t = string_concat(ss, vec_access(s, vec_length(s) - 1 - i));
+		string* t = string_concat(ss, vec_access(s, vec_length(s) - 1 - i));
 		free(ss);
 		ss = t;
 	}
 
-	const string s2 = ss;
-	char* x = string_cstr(s2);
+	const string* s2 = ss;
+	const char* x = string_cstr(s2);
 
 	printf("%s %d\n", x, vec_access(v, 0));
 
@@ -133,7 +134,7 @@ int main()
 
 	free(s);
 
-	string s3 = string_init("hallo");
+	/*const*/ string* s3 = string_init("hallo");
 
 	// this assignment is not checked by compilers
 	// char (*slice)[3]

@@ -71,7 +71,7 @@
 #else
 // work around a compiler bug
 // GCC: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91038
-extern _Thread_local struct vec_a { ssize_t N; void* data; } vec_array_tmp;
+extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
 #define vec_array(T)							\
 (*(({									\
  	auto __T = (T);							\

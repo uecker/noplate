@@ -124,7 +124,7 @@ extern nat nat_sub(const nat a, const nat b);
 
 
 
-string nat_2string(const nat x)
+string* nat_2string(const nat x)
 {
 	int X = vec_length(x);
 //	int N = (X * bitsof(nat_base_t) + 2) / 3;
