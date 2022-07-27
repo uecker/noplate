@@ -1,3 +1,8 @@
+/* Copyright 2022. Martin Uecker
+ * All rights reserved. Use of this source code is governed by
+ * a BSD-style license which can be found in the LICENSE file.
+ * */
+
 
 #include "core.h"
 
@@ -22,4 +27,9 @@
 	(array(typeof((*__y)[0]), __end - __start)*)&(*__y)[__start];	\
 }))
 
+
+#define array_view(T, x)					\
+(*({	auto __y = &(x);					\
+	&(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
+}))
 

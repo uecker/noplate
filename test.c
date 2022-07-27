@@ -1,4 +1,4 @@
-/* Copyright 2021. Martin Uecker
+/* Copyright 2021-2022. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -10,6 +10,7 @@
 
 #include "string.h"
 #include "vec.h"
+#include "view.h"
 #include "list.h"
 #include "nat.h"
 #include "array.h"
@@ -19,6 +20,8 @@
 #ifndef TAGCOMPAT
 vec_decl(int);
 vec_decl(string);
+view_decl(int);
+view_decl(float);
 list_decl(int);
 list_decl(string);
 #endif
@@ -62,6 +65,7 @@ int main()
 
 	vec_push(&v, 1);
 	vec_push(&v, 3);
+	vec_push(&v, 8);
 
 	vec(string)* s = NULL_CHECK(vec_alloc(string));
 
@@ -69,6 +73,26 @@ int main()
 	vec_push(&s, string_init("Hallo"));
 
 	vec_access(v, 1)++;
+
+
+	float bb[4];
+	view(float) vf = array_view(float, bb);
+
+	vec_access(&vf, 1) = 1.;
+
+	view(int) vi = vec_view(int, v);
+
+	vec_access(&vi, 1)++;
+
+	assert(5 == vec_array(&vi)[1]);
+
+#if 0
+	// these should all fail
+	vec_push(vi, 3);
+	vec_push(&vi, 3);
+	vec_push((view(int)*){ &vi }, 3);
+	vec_push(&(view(int)*){ &vi }, 3);
+#endif
 
 #ifndef __clang__
 	int cmp(const int* a, const int* b)
@@ -108,6 +132,18 @@ int main()
 		free(vec_pop(&s));
 
 	free(s);
+
+	string s3 = string_init("hallo");
+
+	// this assignment is not checked by compilers
+	// char (*slice)[3]
+	auto slice = &array_slice(string_cstr(s3), 1, 1 + 3);
+
+	(*slice)[0] = 'A';
+	(*slice)[1] = 'L';
+	(*slice)[2] = 'L';
+
+	printf("%s\n", string_cstr(s3));
 
 
 	char buf[100];

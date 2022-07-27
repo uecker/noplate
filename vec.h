@@ -33,6 +33,8 @@
 #define vec_realloc(T, M)						\
 ({									\
 	auto __Ta = (T);						\
+	(void)TYPE_CHECK(typeof(typeof(vec_eltype(*__Ta)[])*), 		\
+			&(*__Ta)->data);				\
 	(*__Ta)->N = (M);						\
 	*__Ta = realloc(*__Ta, vec_sizeof(*__Ta));			\
 	*__Ta;								\
@@ -69,7 +71,7 @@
 #else
 // work around a compiler bug
 // GCC: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91038
-extern _Thread_local struct vec_a { int N; void* data; } vec_array_tmp;
+extern _Thread_local struct vec_a { ssize_t N; void* data; } vec_array_tmp;
 #define vec_array(T)							\
 (*(({									\
  	auto __T = (T);							\
