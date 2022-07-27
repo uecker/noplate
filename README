@@ -4,7 +4,7 @@ noplate library
 experimental generic type-safe container data structures for C
 
 
-(the need to declare the types upfront would go away with N2366)
+(the need to declare the types upfront will go away with C23)
 
 
 
@@ -25,16 +25,16 @@ Example 1 (vector of integers)
 
 
 
-
-
 Example 2 (vector of strings)
 
-	vec(string)* s = vec_alloc(string);
+	typedef string* string_ptr;
+	vec_decl(string_ptr)
+	vec(string_ptr)* s = vec_alloc(string_ptr);
 
 	vec_push(&s, string_init(" Du!"));
 	vec_push(&s, string_init("Hallo"));
 
-	int cmp2(const string* a, const string* b)
+	int cmp2(const string_ptr* a, const string_ptr* b)
 	{
 		return strcmp(string_cstr(*a), string_cstr(*b));
 	}
@@ -45,5 +45,29 @@ Example 2 (vector of strings)
 		free(vec_pop(&s));
 
 	free(s);
+
+
+
+
+Example 3 (array slice)
+
+	string* s = string_init("hallo");
+
+	auto slice = &array_slice(string_cstr(s), 1, 1 + 3);
+	(*slice)[0] = 'A';
+	(*slice)[1] = 'L';
+	(*slice)[2] = 'L';
+
+
+
+
+Example 4 (byte-level loads and stores)
+
+	char buf[sizeof(int)];
+
+	poke(int, &buf, 1);
+
+
+
 
 
