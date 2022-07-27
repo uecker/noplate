@@ -12,7 +12,6 @@
 
 
 extern inline string* string_alloc(void);
-extern inline size_t string_length(const string* x);
 
 static string* string_init0(int len, const char c[static len])
 {
@@ -34,24 +33,24 @@ string* string_init(const char* c)
 }
 
 
-string* string_dup(const string* x)
+string* string_dup(const string_view x)
 {
-	return string_init0(string_length(x), string_cstr(x));
+	return string_init0(string_length(&x), string_cstr(&x));
 }
 
 
-string* string_concat(const string* a, const string* b)
+string* string_concat(const string_view a, const string_view b)
 {
-	ssize_t alen = string_length(a);
-	ssize_t blen = string_length(b);
+	ssize_t alen = string_length(&a);
+	ssize_t blen = string_length(&b);
 
 	string* x = vec_alloc_n(char, alen + blen + 1);
 
 	if (NULL == x)
 		goto err;
 
-	memcpy(&vec_access(x, 0), string_cstr(a), alen);
-	memcpy(&vec_access(x, alen), string_cstr(b), blen);
+	memcpy(&vec_access(x, 0), string_cstr(&a), alen);
+	memcpy(&vec_access(x, alen), string_cstr(&b), blen);
 	vec_access(x, alen + blen) = '\0';
 
 err:

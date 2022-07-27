@@ -114,7 +114,8 @@ int main()
     
 	for (int i = 0; i < (int)vec_length(s); i++) {
 
-		string* t = string_concat(ss, vec_access(s, vec_length(s) - 1 - i));
+		string* t = string_concat(string_view(ss),
+					string_view(vec_access(s, vec_length(s) - 1 - i)));
 		free(ss);
 		ss = t;
 	}
@@ -146,6 +147,13 @@ int main()
 
 	printf("%s\n", string_cstr(s3));
 
+	string_view v3 = string_view(s3);
+
+	printf("%s\n", string_cstr(&v3));
+
+	assert(vec_length(&v3) == vec_length(s3));
+
+	free(s3);
 
 	char buf[100];
 
