@@ -1,11 +1,41 @@
 
 noplate library
 
-experimental generic type-safe container data structures for C
+*experimental* generic type-safe container data structures for C
+
+
+Generic types provided are: vector, list, product, sum, and
+maybe. The generic types are based on structures defined in
+macros. They take typedef names as arguments and define a
+generic container with this element type:
+
+vec(int)* vi; // pointer to a vector of ints
+
+
+There is also support for arrays and strings. Arrays are just
+regular C arrays but we provide functions such as array_slice
+that perform bounds checking. A string is a vector of char
+with null-termination.
+
+
+All container types preserve information about the type of
+the elements and also have bounds checking, i.e. out-of-bounds
+accesses trap at run-time (with UBSan).
+
+
+Interopability works by providing access to the underlying
+elements. For example, vec_access provide access to an
+lvalue for the underlying element of a vector and vec_array
+provides access to an array representing the complete vector.
+This array is a VLA, so accesses are also checked when using
+UBSan. A string type is defined as vector of char with
+null termination. The underlying array can be passed as
+an argument to C functions, because the array decays to
+a pointer.
+
 
 
 (the need to declare the types upfront will go away with C23)
-
 
 
 Example 1 (vector of integers)
@@ -66,7 +96,6 @@ Example 4 (byte-level loads and stores)
 	char buf[sizeof(int)];
 
 	poke(int, &buf, 1);
-
 
 
 
