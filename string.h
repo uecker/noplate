@@ -12,31 +12,43 @@
 vec_decl(char);
 view_decl(char);
 
-typedef vec(char) string;
+struct string;
+typedef vec(char) string_priv;
+typedef struct string string;
 typedef view(char) string_view;
 
 #define string_check(x)	\
 ({ 									\
 	auto __x = (x);							\
-	(void)_Generic(__x, string*: 1,	const string*: 1,		\
-			string_view*: 1, const string_view*: 1); 	\
 	CHECK('\0' == vec_array(__x)[string_length(__x)]); __x; 	\
 })
 
-#define string_cstr(x) (vec_array(string_check(x)))
-#define string_view(x) (vec_view(char, x))
-#define string_length(x)	(vec_length(x) - 1)
+#define STRING_UNWRAP(x)						\
+({ 									\
+	auto __y = (x);							\
+	_Generic(__y,							\
+		string_priv*: __y, 					\
+		const string_priv*: __y, 				\
+		string*: (string_priv*)__y,				\
+		const string*: (const string_priv*)__y,			\
+		string_view*: __y,					\
+		const string_view*: __y);				\
+})
+
+#define string_cstr(x)		(vec_array(string_check(STRING_UNWRAP(x))))
+#define string_view(x) 		(vec_view(char, STRING_UNWRAP(x)))
+#define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
 
 inline string* string_alloc(void)
 { 
-	string* s = vec_alloc(char);
+	string_priv* s = vec_alloc(char);
 
 	if (NULL == s)
 		goto err;
 
 	vec_push(&s, '\0');
 err:
-	return s;
+	return (string*)s;	// !
 }
 
 

@@ -15,7 +15,7 @@ extern inline string* string_alloc(void);
 
 static string* string_init0(int len, const char c[static len])
 {
-	string* s = vec_alloc_n(char, len + 1);
+	string_priv* s = vec_alloc_n(char, len + 1);
 
 	if (NULL == s)
 		goto err;
@@ -24,7 +24,7 @@ static string* string_init0(int len, const char c[static len])
 	vec_access(s, len) = '\0';
 
 err:
-	return s;
+	return (string*)s;
 }
 
 string* string_init(const char* c)
@@ -44,7 +44,7 @@ string* string_concat(const string_view a, const string_view b)
 	ssize_t alen = string_length(&a);
 	ssize_t blen = string_length(&b);
 
-	string* x = vec_alloc_n(char, alen + blen + 1);
+	string_priv* x = vec_alloc_n(char, alen + blen + 1);
 
 	if (NULL == x)
 		goto err;
@@ -54,7 +54,7 @@ string* string_concat(const string_view a, const string_view b)
 	vec_access(x, alen + blen) = '\0';
 
 err:
-	return x;
+	return (string*)x;
 }
 
 string* string_printf(const char* fmt, ...)
@@ -67,7 +67,7 @@ string* string_printf(const char* fmt, ...)
 
 	va_end(ap);
 
-	string* s = NULL;
+	string_priv* s = NULL;
 
 	if (len < 0)
 		goto err;
@@ -91,6 +91,6 @@ string* string_printf(const char* fmt, ...)
 	}
 
 err:
-	return s;
+	return (string*)s;
 }
 

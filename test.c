@@ -18,7 +18,6 @@
 #include "maybe.h"
 #include "algebraic.h"
 
-
 #ifndef TAGCOMPAT
 vec_decl(int);
 typedef string* string_ptr;
@@ -156,7 +155,7 @@ int main()
 
 	printf("%s\n", string_cstr(&v3));
 
-	assert(vec_length(&v3) == vec_length(s3));
+	assert(vec_length(&v3) == string_length(s3) + 1);
 
 	free(s3);
 
