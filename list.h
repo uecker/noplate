@@ -45,10 +45,10 @@ inline bool list_empty(const struct list* h)
 }
 
 #ifdef TAGCOMPAT
-#define list_node(T) struct list_node ## T  { struct list_node node; T data; }
+#define list_node(T) struct list_node_ ## T  { struct list_node node; T data; }
 #define list(T) struct list_ ## T { struct list list; list_node(T) dummy[]; }
 #else
-#define list_node(T) struct list_node ## T
+#define list_node(T) struct list_node_ ## T
 #define list_node_decl(T) list_node(T) { struct list_node node; T data; }
 
 #define list(T) struct list_ ## T
