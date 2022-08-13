@@ -19,6 +19,10 @@ SRCS = vec.c list.c string.c nat.c
 libnoplate.a: libnoplate.a($(SRCS:.c=.o))
 
 test: test.c libnoplate.a
-	$(CC) $(CFLAGS) -o test test.c libnoplate.a
+	$(CC) $(CFLAGS) -o $@ $^
+	# execstack -c test
+
+test_mdvla: test_mdvla.c libnoplate.a
+	$(CC) $(CFLAGS) -o $@ $^
 	# execstack -c test
 

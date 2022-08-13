@@ -19,9 +19,16 @@
 #endif
 
 
+#define _Ptr(x) typeof(typeof(x)*)
+#define _Array(x, N) typeof(typeof(x)[N])
+
+
 #define TYPE_CHECK(T, x)	(1 ? (x) : (T){0})
 #define containerof(x, T, member)	\
 	((T*)((char*)TYPE_CHECK(typeof(&((T*)0)->member), x) - offsetof(T, member)))
+
+#define choose_type(c, A, B)	typeof(*_Generic(&(int[1 + !!(c)]){ 0 }, int(*)[2]: (typeof(A)*)0, int(*)[1]: (typeof(B)*)0))
+
 
 #if 0
 // -fsanitize=bounds,null
