@@ -33,3 +33,16 @@
 	&(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 }))
 
+
+// note, this can not fail for non-arrays
+#define _array_element(x)									\
+(*({												\
+	auto _q = &(x);										\
+	&choose_expr(function_or_array_p(*_q), (*_q), nil(int[1]))[0];				\
+}))
+
+
+// FIXME: should fail if not an error
+#define array_eltype(x) typeof_(array_element(x))
+
+
