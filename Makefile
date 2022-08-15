@@ -22,7 +22,7 @@ test: test.c libnoplate.a
 	$(CC) $(CFLAGS) -o $@ $^
 	# execstack -c test
 
-test_mdvla: test_mdvla.c libnoplate.a
+test_mdarray: test_mdarray.c libnoplate.a
 	$(CC) $(CFLAGS) -o $@ $^
 	# execstack -c test
 

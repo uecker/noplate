@@ -28,6 +28,7 @@
 	((T*)((char*)TYPE_CHECK(typeof(&((T*)0)->member), x) - offsetof(T, member)))
 
 #define nil(T) ((typeof(T)){ 0 })
+#define nil2(T) ((typeof(T)){ { 0 } })
 //#define nil(T) (*((typeof(T)*){ 0 }))
 #define has_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
 

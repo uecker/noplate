@@ -43,6 +43,6 @@
 
 
 // FIXME: should fail if not an error
-#define array_eltype(x) typeof_(array_element(x))
+#define array_eltype(x) typeof(_array_element(x))
 
 

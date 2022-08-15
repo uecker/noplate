@@ -5,24 +5,24 @@
 
 #include <assert.h>
 
-#include "mdvla.h"
+#include "mdarray.h"
 
-md_vla_decl(3, int);
-md_vla_decl(3, float);
+mdarray_decl(3, int);
+mdarray_decl(3, float);
 
 int main()
 {
-	md_vla(3, int) x = { (int[24]){ 0 }, { 2, 3, 4, } };
+	mdarray(3, int) x = { (int[24]){ 0 }, { 2, 3, 4, } };
 
-	int (*y)[4][3][2] = &md_vla_array(x);
+	int (*y)[4][3][2] = &mdarray_array(x);
 
 	assert(4 == array_lengthof(*y));
 	assert(3 == array_lengthof((*y)[0]));
 	assert(2 == array_lengthof((*y)[0][0]));
 
-	md_vla_array(x)[0][1][1] = 3;
+	mdarray_array(x)[0][1][1] = 3;
 
-	int (*p)[4][3][2] = &md_vla_array(x);
+	int (*p)[4][3][2] = &mdarray_array(x);
 
 	(*p)[1][0][1] = 1;
 
@@ -55,10 +55,10 @@ int main()
 
 	u3[1][1][0] = 1.;
 
-	auto z = md_vla_init(3, float, u3);
-	md_vla(3, float)* zp = &z;
+	auto z = mdarray_init(3, float, u3);
+	mdarray(3, float)* zp = &z;
 
-	assert(1. == md_vla_array(*zp)[1][1][0]);
+	assert(1. == mdarray_array(*zp)[1][1][0]);
 }
 
 
