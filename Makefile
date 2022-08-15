@@ -23,6 +23,6 @@ test: test.c libnoplate.a
 	# execstack -c test
 
 test_mdarray: test_mdarray.c libnoplate.a
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -Wno-missing-braces -o $@ $^
 	# execstack -c test
 
