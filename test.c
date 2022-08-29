@@ -18,9 +18,10 @@
 #include "maybe.h"
 #include "algebraic.h"
 
+typedef string* string_ptr;
+
 #ifndef TAGCOMPAT
 vec_decl(int);
-typedef string* string_ptr;
 vec_decl(string_ptr);
 view_decl(int);
 view_decl(float);
@@ -29,6 +30,8 @@ list_decl(string_ptr);
 maybe_decl(int);
 typedef product_decl(int, float) product_name(int, float);
 sum_decl(product_name(int, float), string_ptr);
+#else
+typedef product(int, float) product_name(int, float);
 #endif
 
 
