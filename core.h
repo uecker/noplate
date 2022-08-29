@@ -29,6 +29,9 @@
 
 #define nil(T) ((typeof(T)){ 0 })
 #define nil2(T) ((typeof(T)){ { 0 } })
+
+#define NODECL(T) typeof(({ nil(T); }))
+
 //#define nil(T) (*((typeof(T)*){ 0 }))
 #define has_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
 
