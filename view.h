@@ -17,9 +17,9 @@
 #endif
 
 #define array_view(T, x)					\
-(*({	auto __y = &(x);					\
-	&(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
-}))
+({	auto __y = &(x);					\
+	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
+})
 
 #define vec_view(T, x)	array_view(T, vec_array(x))
 
