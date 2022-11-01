@@ -48,14 +48,8 @@ struct _mdarray_error { char c; };
 #endif
 
 
-#define mdarray_init(R, T, X) 						\
-({	auto _s = &(X);							\
- 	mdarray(R, T) _v;						\
-	TYPE_CHECK(T, nil(array_nested_eltype(*_s)));			\
-	_Static_assert(mdarray_rank(_v) == array_rank((*_s)), "");	\
-	_v = (typeof(_v)){ (void*)_s, { array_dims(R, (*_s)) } };	\
-	_v;								\
-})
+// FIXME
+#define mdarray_init(R, T, X) 		(mdarray(R, T)){ (void*)&X, array_dims(R, (X)) }
 
 #endif	// _MDARRAY_H
 
