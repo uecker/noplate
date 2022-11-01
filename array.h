@@ -11,7 +11,7 @@
 (sizeof *({ 							\
 	auto __x = &(x);					\
 	(void)TYPE_CHECK(typeof((*__x)[0])(*)[], __x);		\
-	char (*__tmp)[(sizeof(*__x) / sizeof((*__x)[0]))];	\
+	char (*__tmp)[(sizeof(*__x) / sizeof((*__x)[0]))] = 0;	\
 	__tmp;							\
 }))
 	
