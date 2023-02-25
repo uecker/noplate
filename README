@@ -23,7 +23,7 @@ the elements and also have bounds checking, i.e. out-of-bounds
 accesses trap at run-time (with UBSan).
 
 
-Interopability works by providing access to the underlying
+Interoperability works by providing access to the underlying
 elements. For example, vec_access provide access to an
 lvalue for the underlying element of a vector and vec_array
 provides access to an array representing the complete vector.
