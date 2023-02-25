@@ -106,17 +106,29 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
  	__r;								\
 })
 
+#ifdef __clang__
+typedef int CLOSURE_TYPE(qsort_cmp_func_t)(const void*, const void*, void*);
+struct qsort_frw_data { qsort_cmp_func_t fun; void* data; };
+inline int qsort_block_forward(const void* a, const void* b, void* _d)
+{
+	struct qsort_frw_data* data = _d;
+	return data->fun(a, b, data->data);
+}
+#define qsort_r(ptr, N, si, cmp, data) \
+	qsort_r(ptr, N, si, qsort_block_forward, &(struct qsort_frw_data){ cmp, data })
+#endif
+
 #define vec_sort(v2, cmp)						\
 ({									\
  	auto __T1 = (v2);						\
 	typedef vec_eltype(__T1) __ET;					\
-	struct { int (*xcmp)(const __ET*, const __ET*); }		\
+	struct { int CLOSURE_TYPE(xcmp)(const __ET*, const __ET*); }	\
 		__d = { (cmp) };					\
-	int __cmp(const void* a, const void* b, void* _d)		\
+	NESTED(int, __cmp, (const void* a, const void* b, void* _d))	\
 	{								\
 		typeof(__d)* d = _d;					\
 		return d->xcmp((const __ET*)a, (const __ET*)b);		\
-	}								\
+	};								\
 	qsort_r(__T1->data, __T1->N, sizeof(__ET), __cmp, &__d);	\
 })
 

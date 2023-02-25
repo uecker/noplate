@@ -102,21 +102,20 @@ int main()
 	vec_push(&(view(int)*){ &vi }, 3);
 #endif
 
-#ifndef __clang__
-	int cmp(const int* a, const int* b)
+	NESTED(int, cmp, (const int* a, const int* b))
 	{ 
 		return *b - *a;
-	}
+	};
 
 	vec_sort(v, cmp);
 
-	int cmp2(const string_ptr* a, const string_ptr* b)
+	NESTED(int, cmp2, (const string_ptr* a, const string_ptr* b))
 	{ 
 		return strcmp(string_cstr(*a), string_cstr(*b));
-	}
+	};
 
 	vec_sort(s, cmp2);
-#endif
+
 	string* ss = NULL_CHECK(string_alloc());
     
 	for (int i = 0; i < (int)vec_length(s); i++) {

@@ -50,6 +50,18 @@
 #define choose_type(c, A, B)	typeof(*_Generic(&(int[1 + !!(c)]){ 0 }, int(*)[2]: (typeof(A)*)0, int(*)[1]: (typeof(B)*)0))
 #define choose_ice(c, A, B)	sizeof(choose_type(c, nil(char[(A)]), nil(char[(B)])))
 
+#if defined(__clang__) && !defined(__CUDACC__)
+#define NESTED(RET, NAME, ARGS) \
+	RET (^NAME)ARGS = ^ARGS
+#define CLOSURE_TYPE(x) (^x)
+#else
+#define NESTED(RET, NAME, ARGS) \
+	RET NAME ARGS
+#define CLOSURE_TYPE(x) (*x)
+#define __block
+#endif
+
+
 #if 0
 // -fsanitize=bounds,null
 #define CHECK(x)

@@ -2,13 +2,21 @@
 # All rights reserved. Use of this source code is governed by
 # a BSD-style license which can be found in the LICENSE file.
 
-CFLAGS = -O2 -g -std=gnu17 -Wall -Wextra -fsanitize=bounds,null -fsanitize-undefined-trap-on-error -D_GNU_SOURCE
+CC ?= gcc
+CFLAGS = -O2 -g -std=gnu17 -Wall -Wextra  -D_GNU_SOURCE
+
+ifeq ($(findstring clang,$(CC)),clang)
+CFLAGS += -fsanitize=vla-bound,bounds,null -fsanitize-undefined-trap-on-error -fblocks -lBlocksRuntime
+else
+CFLAGS += -fsanitize=vla-bound,bounds-strict,null -fsanitize-undefined-trap-on-error
+endif
 
 ifeq ($(TAGCOMPAT),1)
 CFLAGS += -DTAGCOMPAT -ftag-compat
 endif
 
-CC ?= gcc
+
+
 SRCS = vec.c list.c string.c nat.c
 
 .INTERMEDIATE: $(SRCS:.c=.o)

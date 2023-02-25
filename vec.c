@@ -9,3 +9,7 @@
 _Thread_local struct vec_a vec_array_tmp = { 0 };
 #endif
 
+#ifdef __clang__
+extern inline int qsort_block_forward(const void* a, const void* b, void* _d);
+#endif
+
