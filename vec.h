@@ -107,15 +107,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 })
 
 #ifdef __clang__
-typedef int CLOSURE_TYPE(qsort_cmp_func_t)(const void*, const void*, void*);
-struct qsort_frw_data { qsort_cmp_func_t fun; void* data; };
-inline int qsort_block_forward(const void* a, const void* b, void* _d)
-{
-	struct qsort_frw_data* data = _d;
-	return data->fun(a, b, data->data);
-}
-#define qsort_r(ptr, N, si, cmp, data) \
-	qsort_r(ptr, N, si, qsort_block_forward, &(struct qsort_frw_data){ cmp, data })
+#define qsort_r(ptr, N, si, cmp, data) noplate_qsort_blocks(ptr, N, si, cmp, data)
 #endif
 
 #define vec_sort(v2, cmp)						\
