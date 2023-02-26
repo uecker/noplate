@@ -1,4 +1,4 @@
-/* Copyright 2021. Martin Uecker
+/* Copyright 2021-2023. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -61,6 +61,9 @@
 #define __block
 #endif
 
+#define __CONCAT0(x, y) x ## y
+#define __CONCAT1(x, y) __CONCAT0(x, y)
+#define __UNIQ __CONCAT1(__x,  __COUNTER__)
 
 #if 0
 // -fsanitize=bounds,null

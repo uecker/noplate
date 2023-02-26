@@ -182,14 +182,12 @@ int main()
 	auto ifl = product_init(int, float, (3, 0.1));
 	auto si = sum_init(product_name(int, float), string_ptr, ifl);
 
-#ifndef __clang__
-	int add1(product(int, float) ifl) { return product_car(ifl) + 1; }
-	int slen(string_ptr x) { return string_length(x); }
+	NESTED(int, add1, (product(int, float) ifl)) { return product_car(ifl) + 1; };
+	NESTED(int, slen, (string_ptr x)) { return (int)string_length(x); };
 
 	int si2 = sum_choice(si, add1, slen);
 
 	assert(4 == si2);
-#endif
 
 	nat a = NAT(3000);
 	nat b = NAT(1 << 20);

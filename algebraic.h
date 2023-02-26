@@ -32,7 +32,7 @@
 
 #define sum_init(S, T, x)					\
 ({ 								\
-	auto __x = (x); 					\
+	auto __x = (x);	 					\
 	sum(S, T) __n;						\
 	*_Generic(__x, 						\
 		typeof(__n.car): (__n.sel = false, &__n.car),	\
@@ -41,11 +41,14 @@
 	__n;							\
 })
 
+#define __sum_car(id, x)	({ auto id = (x); CHECK(!id.sel); id.car; })
+#define __sum_cdr(id, x)	({ auto id = (x); CHECK( id.sel); id.cdr; })
 
-#define sum_car(x)	({ auto __x = (x); CHECK(!__x.sel); __x.car; })
-#define sum_cdr(x)	({ auto __x = (x); CHECK( __x.sel); __x.cdr; })
+#define sum_car(x)		__sum_car(__UNIQ, x)
+#define sum_cdr(x)		__sum_cdr(__UNIQ, x)
 
-#define sum_choice(x, f, g)	({ auto __x = (x); (!__x.sel) ? (f((sum_car(__x)))) : (g((sum_cdr(__x)))); })
+#define sum_choice(x, f, g)	({ auto id = (x); (!id.sel) ? (f((sum_car(id)))) : (g((sum_cdr(id)))); })
+
 
 
 

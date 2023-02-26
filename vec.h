@@ -106,8 +106,11 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
  	__r;								\
 })
 
-#ifdef __clang__
-#define qsort_r(ptr, N, si, cmp, data) noplate_qsort_blocks(ptr, N, si, cmp, data)
+#ifndef __clang__
+#define noplate_qsort(ptr, N, si, cmp, data) qsort_r(ptr, N, si, cmp, data)
+#else
+typedef int CLOSURE_TYPE(noplate_qsort_cmp_func_t)(const void*, const void*, void*);
+extern void noplate_qsort(void* ptr, size_t N, size_t si, noplate_qsort_cmp_func_t cmp, void* data);
 #endif
 
 #define vec_sort(v2, cmp)						\
@@ -121,7 +124,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 		typeof(__d)* d = _d;					\
 		return d->xcmp((const __ET*)a, (const __ET*)b);		\
 	};								\
-	qsort_r(__T1->data, __T1->N, sizeof(__ET), __cmp, &__d);	\
+	noplate_qsort(__T1->data, __T1->N, sizeof(__ET), __cmp, &__d);	\
 })
 
 #endif
