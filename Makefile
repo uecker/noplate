@@ -1,4 +1,4 @@
-# Copyright 2021. Martin Uecker
+# Copyright 2021-2023. Martin Uecker
 # All rights reserved. Use of this source code is governed by
 # a BSD-style license which can be found in the LICENSE file.
 
@@ -17,22 +17,22 @@ ifeq ($(TAGCOMPAT),1)
 CFLAGS += -DTAGCOMPAT -ftag-compat
 endif
 
+CPPFLAGS= -iquote ./src/
 
-
-SRCS = vec.c list.c string.c nat.c
+SRCS = $(wildcard src/*.c)
 
 .INTERMEDIATE: $(SRCS:.c=.o)
 
 (%): %
 	$(AR) $(ARFLAGS) $@ $%
 
-libnoplate.a: libnoplate.a($(SRCS:.c=.o))
+lib/libnoplate.a: lib/libnoplate.a($(SRCS:.c=.o))
 
-test: test.c libnoplate.a
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+test: test.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 	# execstack -c test
 
-test_mdarray: test_mdarray.c libnoplate.a
-	$(CC) $(CFLAGS) $(LDFLAGS) -Wno-missing-braces -o $@ $^
+test_mdarray: test_mdarray.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -Wno-missing-braces -o $@ $^
 	# execstack -c test
 
