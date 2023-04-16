@@ -24,7 +24,7 @@ accesses trap at run-time (with UBSan).
 
 
 Interoperability works by providing access to the underlying
-elements. For example, vec_access provide access to an
+elements. For example, vec_access provides access to an
 lvalue for the underlying element of a vector and vec_array
 provides access to an array representing the complete vector.
 This array is a VLA, so accesses are also checked when using
