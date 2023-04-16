@@ -92,7 +92,10 @@ int main()
 
 	vec_access(&vi, 1)++;
 
+	int (*t)[3] = &vec_array(&vi);
+
 	assert(5 == vec_array(&vi)[1]);
+	assert((*t)[2] == vec_array(&vi)[2]);
 
 #if 0
 	// these should all fail
