@@ -503,3 +503,25 @@ int rb3_check_tree(struct rb3_tree *tree)
                 visit_inorder(tree);
         return valid;
 }
+
+extern inline void rb3_reset_head(struct rb3_head *head);
+extern inline void rb3_reset_tree(struct rb3_tree *tree);
+extern inline struct rb3_head *rb3_get_base(struct rb3_tree *tree);
+extern inline int rb3_is_base(struct rb3_head *head);
+extern inline int rb3_is_head_linked(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_child(struct rb3_head *head, int dir);
+extern inline int rb3_has_child(struct rb3_head *head, int dir);
+extern inline int rb3_get_parent_dir(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_parent(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_root(struct rb3_tree *tree);
+extern inline int rb3_is_empty(struct rb3_tree *tree);
+extern inline struct rb3_head *rb3_get_min(struct rb3_tree *tree);
+extern inline struct rb3_head *rb3_get_max(struct rb3_tree *tree);
+extern inline struct rb3_head *rb3_get_prev(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_next(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_prev_descendant(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_next_descendant(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_prev_ancestor(struct rb3_head *head);
+extern inline struct rb3_head *rb3_get_next_ancestor(struct rb3_head *head);
+extern inline struct rb3_head *rb3_INLINE_find(struct rb3_head *parent, int dir, rb3_cmp cmp, void *data, struct rb3_head **parent_out, int *dir_out);
+

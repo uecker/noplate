@@ -104,7 +104,7 @@ typedef void rb3_augment_func(struct rb3_head *head /*, void *data */);
  * Initialize an rb3_head.
  * After initialization, rb3_is_head_linked() will return false.
  */
-static inline void rb3_reset_head(struct rb3_head *head)
+inline void rb3_reset_head(struct rb3_head *head)
 {
         head->child[RB3_LEFT] = 0;
         head->child[RB3_RIGHT] = 0;
@@ -114,7 +114,7 @@ static inline void rb3_reset_head(struct rb3_head *head)
 /**
  * Initialize an rb3_tree.
  */
-static inline void rb3_reset_tree(struct rb3_tree *tree)
+inline void rb3_reset_tree(struct rb3_tree *tree)
 {
         tree->base.child[RB3_LEFT] = 0;
         /* ! see doc of rb3_is_base(). */
@@ -132,7 +132,7 @@ static inline void rb3_reset_tree(struct rb3_tree *tree)
  * Warning: the base head is never embedded in a client payload structure.
  * It's just a link to host the real root of the tree as its left child.
  */
-static inline struct rb3_head *rb3_get_base(struct rb3_tree *tree)
+inline struct rb3_head *rb3_get_base(struct rb3_tree *tree)
 {
         return &tree->base;
 }
@@ -140,7 +140,7 @@ static inline struct rb3_head *rb3_get_base(struct rb3_tree *tree)
 /**
  * Test if given head is base of tree.
  */
-static inline int rb3_is_base(struct rb3_head *head)
+inline int rb3_is_base(struct rb3_head *head)
 {
 #if 1
 	return 0 == head->parent;
@@ -159,7 +159,7 @@ static inline int rb3_is_base(struct rb3_head *head)
 /**
  * Check if a non-base head is linked in a (any) tree.
  */
-static inline int rb3_is_head_linked(struct rb3_head *head)
+inline int rb3_is_head_linked(struct rb3_head *head)
 {
         return head->parent != 0;
 }
@@ -168,7 +168,7 @@ static inline int rb3_is_head_linked(struct rb3_head *head)
  * Get child in given direction, or NULL if there is no such child. `dir`
  * must be RB3_LEFT or RB3_RIGHT.
  */
-static inline struct rb3_head *rb3_get_child(struct rb3_head *head, int dir)
+inline struct rb3_head *rb3_get_child(struct rb3_head *head, int dir)
 {
         return (struct rb3_head *)((head->child[dir]) & ~3);
 }
@@ -178,7 +178,7 @@ static inline struct rb3_head *rb3_get_child(struct rb3_head *head, int dir)
  * This is slightly more efficient than calling rb3_get_child() and comparing
  * to NULL.
  */
-static inline int rb3_has_child(struct rb3_head *head, int dir)
+inline int rb3_has_child(struct rb3_head *head, int dir)
 {
         return head->child[dir] != 0;
 }
@@ -194,7 +194,7 @@ static inline int rb3_has_child(struct rb3_head *head, int dir)
  * This is more convenient and (in theory) more efficient than getting the
  * parent and testing its left and right child.
  */
-static inline int rb3_get_parent_dir(struct rb3_head *head)
+inline int rb3_get_parent_dir(struct rb3_head *head)
 {
         return head->parent & 1;
 }
@@ -205,7 +205,7 @@ static inline int rb3_get_parent_dir(struct rb3_head *head)
  * Note that normally you don't want to visit the base head but stop already
  * at the root node.
  */
-static inline struct rb3_head *rb3_get_parent(struct rb3_head *head)
+inline struct rb3_head *rb3_get_parent(struct rb3_head *head)
 {
         return (struct rb3_head *)(head->parent & ~3);
 }
@@ -213,7 +213,7 @@ static inline struct rb3_head *rb3_get_parent(struct rb3_head *head)
 /**
  * Get topmost element of tree (or NULL if empty)
  */
-static inline struct rb3_head *rb3_get_root(struct rb3_tree *tree)
+inline struct rb3_head *rb3_get_root(struct rb3_tree *tree)
 {
         return rb3_get_child(&tree->base, RB3_LEFT);
 }
@@ -221,7 +221,7 @@ static inline struct rb3_head *rb3_get_root(struct rb3_tree *tree)
 /**
  * Check if tree is empty.
  */
-static inline int rb3_is_empty(struct rb3_tree *tree)
+inline int rb3_is_empty(struct rb3_tree *tree)
 {
         struct rb3_head *base = rb3_get_base(tree);
         return !rb3_has_child(base, RB3_LEFT);
@@ -240,7 +240,7 @@ extern struct rb3_head *rb3_get_minmax(struct rb3_tree *tree, int dir);
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_min(struct rb3_tree *tree)
+inline struct rb3_head *rb3_get_min(struct rb3_tree *tree)
 {
         return rb3_get_minmax(tree, RB3_LEFT);
 }
@@ -273,7 +273,7 @@ extern struct rb3_head *rb3_get_prevnext(struct rb3_head *head, int dir);
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_max(struct rb3_tree *tree)
+inline struct rb3_head *rb3_get_max(struct rb3_tree *tree)
 {
         return rb3_get_minmax(tree, RB3_RIGHT);
 }
@@ -284,7 +284,7 @@ static inline struct rb3_head *rb3_get_max(struct rb3_tree *tree)
  *
  * Time complexity: O(log n), amortized over sequential scan: O(1)
  */
-static inline struct rb3_head *rb3_get_prev(struct rb3_head *head)
+inline struct rb3_head *rb3_get_prev(struct rb3_head *head)
 {
         return rb3_get_prevnext(head, RB3_LEFT);
 }
@@ -295,7 +295,7 @@ static inline struct rb3_head *rb3_get_prev(struct rb3_head *head)
  *
  * Time complexity: O(log n), amortized over sequential scan: O(1)
  */
-static inline struct rb3_head *rb3_get_next(struct rb3_head *head)
+inline struct rb3_head *rb3_get_next(struct rb3_head *head)
 {
         return rb3_get_prevnext(head, RB3_RIGHT);
 }
@@ -306,7 +306,7 @@ static inline struct rb3_head *rb3_get_next(struct rb3_head *head)
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_prev_descendant(struct rb3_head *head)
+inline struct rb3_head *rb3_get_prev_descendant(struct rb3_head *head)
 {
         return rb3_get_prevnext_descendant(head, RB3_LEFT);
 }
@@ -317,7 +317,7 @@ static inline struct rb3_head *rb3_get_prev_descendant(struct rb3_head *head)
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_next_descendant(struct rb3_head *head)
+inline struct rb3_head *rb3_get_next_descendant(struct rb3_head *head)
 {
         return rb3_get_prevnext_descendant(head, RB3_RIGHT);
 }
@@ -328,7 +328,7 @@ static inline struct rb3_head *rb3_get_next_descendant(struct rb3_head *head)
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_prev_ancestor(struct rb3_head *head)
+inline struct rb3_head *rb3_get_prev_ancestor(struct rb3_head *head)
 {
         return rb3_get_prevnext_ancestor(head, RB3_LEFT);
 }
@@ -339,7 +339,7 @@ static inline struct rb3_head *rb3_get_prev_ancestor(struct rb3_head *head)
  *
  * Time complexity: O(log n)
  */
-static inline struct rb3_head *rb3_get_next_ancestor(struct rb3_head *head)
+inline struct rb3_head *rb3_get_next_ancestor(struct rb3_head *head)
 {
         return rb3_get_prevnext_ancestor(head, RB3_RIGHT);
 }
@@ -456,7 +456,7 @@ extern struct rb3_tree *rb3_get_containing_tree(struct rb3_head *head);
 /*
 XXX: is inlining the search function advantageous?
 */
-static inline struct rb3_head *rb3_INLINE_find(struct rb3_head *parent, int dir, rb3_cmp cmp, void *data, struct rb3_head **parent_out, int *dir_out)
+inline struct rb3_head *rb3_INLINE_find(struct rb3_head *parent, int dir, rb3_cmp cmp, void *data, struct rb3_head **parent_out, int *dir_out)
 {
         _RB3_ASSERT(parent != _RB3_NULL);
         while (rb3_has_child(parent, dir)) {
