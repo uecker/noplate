@@ -17,6 +17,7 @@
 #include "mem.h"
 #include "maybe.h"
 #include "algebraic.h"
+#include "rbtree.h"
 
 typedef string* string_ptr;
 
@@ -30,6 +31,7 @@ list_decl(string_ptr);
 maybe_decl(int);
 typedef product_decl(int, float) product_name(int, float);
 sum_decl(product_name(int, float), string_ptr);
+rbtree_decl(int);
 #else
 typedef product(int, float) product_name(int, float);
 #endif
@@ -107,7 +109,7 @@ int main()
 
 	NESTED(int, cmp, (const int* a, const int* b))
 	{ 
-		return *b - *a;
+		return *a - *b;
 	};
 
 	vec_sort(v, cmp);
@@ -206,6 +208,24 @@ int main()
 	free(c);
 	free(d);
 	free(e);
+
+	rbtree(int) rb = { };
+
+	int m31 = (1u << 31) - 1u;
+	assert(m31 == 0x7FFFFFFFU);
+
+	rbtree_set_compare(&rb, cmp);
+
+	int b2 = 3;
+	for (int i = 0; i != 100000; i++, b2 = (b2 * 3) % m31)
+		rbtree_insert(&rb, b2);
+#if 0
+	for (rbtree_node(int)* n = rbtree_first(&rb); n; n = rbtree_node_next(n))
+		printf("%u\n", rbtree_node_access(n));
+#endif
+	rbtree_node(int)* last;
+	while ((last = rbtree_last(&rb)))
+		rbtree_delete(&rb, rbtree_node_access(last));
 }
 
 
