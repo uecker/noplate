@@ -31,9 +31,11 @@ list_decl(string_ptr);
 maybe_decl(int);
 typedef product_decl(int, float) product_name(int, float);
 sum_decl(product_name(int, float), string_ptr);
-rbtree_decl(int);
+typedef product_decl(int, int) product_name(int, int);
+rbtree_decl(product_name(int, int));
 #else
 typedef product(int, float) product_name(int, float);
+typedef product(int, int) product_name(int, int);
 #endif
 
 
@@ -209,22 +211,31 @@ int main()
 	free(d);
 	free(e);
 
-	rbtree(int) rb = { };
+	rbtree(product_name(int, int)) rb = { };
 
-	int m31 = (1u << 31) - 1u;
+	NESTED(int, cmp3, (const product(int, int)* a, const product(int, int)* b))
+	{
+		return cmp(&product_car(*a), &product_car(*b));
+	};
+
+	rbtree_set_compare(&rb, cmp3);
+
+	unsigned int m31 = (1u << 31) - 1u;
 	assert(m31 == 0x7FFFFFFFU);
 
-	rbtree_set_compare(&rb, cmp);
+	unsigned int b2 = 3;
+	for (int i = 0; i != 100000; i++, b2 = (b2 * 3u) % m31)
+		rbtree_insert(&rb, product_init(int, int, (b2, i)));
 
-	int b2 = 3;
-	for (int i = 0; i != 100000; i++, b2 = (b2 * 3) % m31)
-		rbtree_insert(&rb, b2);
-#if 0
-	for (rbtree_node(int)* n = rbtree_first(&rb); n; n = rbtree_node_next(n))
-		printf("%u\n", rbtree_node_access(n));
-#endif
-	rbtree_node(int)* last;
-	while ((last = rbtree_last(&rb)))
+	int prev = 0;
+	for (auto n = rbtree_first(&rb); NULL != n; n = rbtree_node_next(n)) {
+
+		product(int, int) x = rbtree_node_access(n);
+		assert(prev < product_car(x));
+		prev = product_car(x);
+	}
+
+	for (rbtree_node_type(&rb)* last; (last = rbtree_last(&rb)); )
 		rbtree_delete(&rb, rbtree_node_access(last));
 }
 
