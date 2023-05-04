@@ -9,10 +9,10 @@
 #include "array.h"
 
 #ifdef TAGCOMPAT
-#define mdarray(R, T) 	struct mdarray_ ## R ## _ ## T { T* data; size_t dims[R]; }
+#define mdarray(R, T) struct CONCAT(mdarray_, CONCAT(CONCAT(R, _), T)) { T* data; size_t dims[R]; }
 #define mdarray_decl(R, T)
 #else
-#define mdarray(R, T) struct mdarray_ ## R ## _ ## T
+#define mdarray(R, T) struct CONCAT(mdarray_, CONCAT(CONCAT(R, _), T))
 #define mdarray_decl(R, T) mdarray(R, T)	{ T* data; size_t dims[R]; }
 #endif
 

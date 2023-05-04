@@ -5,8 +5,8 @@
 #include "core.h"
 
 
-#define product_name(S, T) product_ ## S ## _ ## T
-#define sum_name(S, T)	sum_ ## S ## _ ## T
+#define product_name(S, T) CONCAT(product_, CONCAT(CONCAT(S, _), T))
+#define sum_name(S, T)	CONCAT(sum_, CONCAT(CONCAT(S, _), T))
 
 #ifdef TAGCOMPAT
 #define product(S, T) struct product_name(S, T) { S car; T cdr; }

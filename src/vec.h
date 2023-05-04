@@ -11,10 +11,10 @@
 
 
 #ifdef TAGCOMPAT
-#define vec(T) struct vec_ ## T { ssize_t N; T data[]; }
+#define vec(T) CONCAT(struct vec_, T) { ssize_t N; T data[]; }
 #define vec_decl(T)
 #else
-#define vec(T) struct vec_ ## T
+#define vec(T) CONCAT(struct vec_, T)
 #define vec_decl(T) vec(T) { ssize_t N; T data[]; }
 #endif
 

@@ -9,10 +9,10 @@
 #include "core.h"
 
 #ifdef TAGCOMPAT
-#define view(T) struct view_ ## T { ssize_t N; T* data; }
+#define view(T) struct CONCAT(view_, T) { ssize_t N; T* data; }
 #define view_decl(T)
 #else
-#define view(T) struct view_ ## T
+#define view(T) struct CONCAT(view_, T)
 #define view_decl(T) view(T) { ssize_t N; T* data; }
 #endif
 

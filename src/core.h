@@ -13,6 +13,8 @@
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 #endif
 
+#define _CONCAT1(A, B) A ## B
+#define CONCAT(A, B) _CONCAT1(A, B)
 
 #ifndef auto
 #define auto __auto_type
@@ -22,6 +24,7 @@
 #define typeof(X) __typeof(X)
 #endif
 
+#define compound_literal(T, x)  (struct { T data; }){ x }.data
 
 #define _Ptr(x) typeof(typeof(x)*)
 #define _Array(x, N) typeof(typeof(x)[N])
@@ -63,7 +66,7 @@
 
 #define __CONCAT0(x, y) x ## y
 #define __CONCAT1(x, y) __CONCAT0(x, y)
-#define __UNIQ __CONCAT1(__x,  __COUNTER__)
+#define __UNIQ CONCAT(__x,  __COUNTER__)
 
 #if 0
 // -fsanitize=bounds,null

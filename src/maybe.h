@@ -5,10 +5,10 @@
 #include "core.h"
 
 #ifdef TAGCOMPAT
-#define maybe(T) struct maybe_ ## T { bool ok; T value; }
+#define maybe(T) struct CONCAT(maybe_, T) { bool ok; T value; }
 #define maybe_decl(T)
 #else
-#define maybe(T) struct maybe_ ## T
+#define maybe(T) struct CONCAT(maybe_, T)
 #define maybe_decl(T) maybe(T) { bool ok; T value; }
 #endif
 
