@@ -13,6 +13,10 @@
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 #endif
 
+#if (GCC_VERSION >= 140000)
+#define TAGCOMPAT
+#endif
+
 #define _CONCAT1(A, B) A ## B
 #define CONCAT(A, B) _CONCAT1(A, B)
 

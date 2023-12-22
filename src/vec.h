@@ -9,7 +9,6 @@
 #include "core.h"
 
 
-
 #ifdef TAGCOMPAT
 #define vec(T) CONCAT(struct vec_, T) { ssize_t N; T data[]; }
 #define vec_decl(T)
@@ -58,9 +57,6 @@
 
 #define vec_alloc(T) (vec_alloc_n(T, 0))
 
-#ifndef GCC_VERSION
-#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-#endif
 
 #if (GCC_VERSION >= 110300) || defined __clang__
 #define vec_array(T) \
