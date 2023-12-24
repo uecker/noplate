@@ -26,7 +26,7 @@
 #define vec_sizeof(T) 							\
 ({									\
  	auto __T = (T);							\
-	sizeof(__T) + __T->N * sizeof(vec_eltype(__T));			\
+	sizeof(*__T) + __T->N * sizeof(vec_eltype(__T));		\
 })
 
 #define vec_realloc(T, M)						\
