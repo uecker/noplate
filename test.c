@@ -75,31 +75,31 @@ int main()
 
 	vec(int)* v = NULL_CHECK(vec_alloc(int));
 
-	vec_push(&v, 1);
-	vec_push(&v, 3);
-	vec_push(&v, 8);
+	vec_push(int, &v, 1);
+	vec_push(int, &v, 3);
+	vec_push(int, &v, 8);
 
 	vec(string_ptr)* s = NULL_CHECK(vec_alloc(string_ptr));
 
-	vec_push(&s, string_init(" Du!"));
-	vec_push(&s, string_init("Hallo"));
+	vec_push(string_ptr, &s, string_init(" Du!"));
+	vec_push(string_ptr, &s, string_init("Hallo"));
 
-	vec_access(v, 1)++;
+	vec_access(int, v, 1)++;
 
 
 	float bb[4];
 	view(float) vf = array_view(float, bb);
 
-	vec_access(&vf, 1) = 1.;
+	vec_access(float, &vf, 1) = 1.;
 
 	view(int) vi = vec_view(int, v);
 
-	vec_access(&vi, 1)++;
+	vec_access(int, &vi, 1)++;
 
-	int (*t)[3] = &vec_array(&vi);
+	int (*t)[3] = &vec_array(int, &vi);
 
-	assert(5 == vec_array(&vi)[1]);
-	assert((*t)[2] == vec_array(&vi)[2]);
+	assert(5 == vec_array(int, &vi)[1]);
+	assert((*t)[2] == vec_array(int, &vi)[2]);
 
 #if 0
 	// these should all fail
@@ -128,7 +128,7 @@ int main()
 	for (int i = 0; i < (int)vec_length(s); i++) {
 
 		string* t = string_concat(string_view(ss),
-					string_view(vec_access(s, vec_length(s) - 1 - i)));
+					string_view(vec_access(string_ptr, s, vec_length(s) - 1 - i)));
 		free(ss);
 		ss = t;
 	}
@@ -136,15 +136,15 @@ int main()
 	const string* s2 = ss;
 	const char* x = string_cstr(s2);
 
-	printf("%s %d\n", x, vec_access(v, 0));
+	printf("%s %d\n", x, vec_access(int, v, 0));
 
-	assert(vec_length(s) == array_lengthof(vec_array(s)));
+	assert(vec_length(s) == array_lengthof(vec_array(string_ptr, s)));
 
 	free(v);
 	free(ss);
 
 	while (0 < vec_length(s))
-		free(vec_pop(&s));
+		free(vec_pop(string_ptr, &s));
 
 	free(s);
 

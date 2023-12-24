@@ -20,7 +20,7 @@ typedef view(char) string_view;
 #define string_check(x)	\
 ({ 									\
 	auto __x = (x);							\
-	CHECK('\0' == vec_array(__x)[string_length(__x)]); __x; 	\
+	CHECK('\0' == vec_array(char, __x)[string_length(__x)]); __x; 	\
 })
 
 #define STRING_UNWRAP(x)						\
@@ -35,7 +35,7 @@ typedef view(char) string_view;
 		const string_view*: __y);				\
 })
 
-#define string_cstr(x)		(vec_array(string_check(STRING_UNWRAP(x))))
+#define string_cstr(x)		(vec_array(char, string_check(STRING_UNWRAP(x))))
 #define string_view(x) 		(vec_view(char, STRING_UNWRAP(x)))
 #define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
 
@@ -46,7 +46,7 @@ inline string* string_alloc(void)
 	if (NULL == s)
 		goto err;
 
-	vec_push(&s, '\0');
+	vec_push(char, &s, '\0');
 err:
 	return (string*)s;	// !
 }

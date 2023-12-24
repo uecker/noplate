@@ -21,7 +21,7 @@
 	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 })
 
-#define vec_view(T, x)	array_view(T, vec_array(x))
+#define vec_view(T, x)	array_view(T, vec_array(T, x))
 
 #endif
 

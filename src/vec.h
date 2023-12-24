@@ -23,19 +23,15 @@
 
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
 
-#define vec_sizeof(T) 							\
-({									\
- 	auto __T = (T);							\
-	sizeof(*__T) + __T->N * sizeof(vec_eltype(__T));		\
-})
+#define vec_sizeof(T, x) (sizeof(vec(T)) + (x)->N * sizeof(T))
 
-#define vec_realloc(T, M)						\
+#define vec_realloc(T, x, M)						\
 ({									\
-	auto __Ta = (T);						\
+	vec(T) **__Ta = (x);						\
 	(void)TYPE_CHECK(typeof(typeof(vec_eltype(*__Ta)[])*), 		\
 			&(*__Ta)->data);				\
 	(*__Ta)->N = (M);						\
-	*__Ta = realloc(*__Ta, vec_sizeof(*__Ta));			\
+	*__Ta = realloc(*__Ta, vec_sizeof(T, *__Ta));			\
 	*__Ta;								\
 })
 
@@ -59,46 +55,46 @@
 
 
 #if (GCC_VERSION >= 110300) || defined __clang__
-#define vec_array(T) \
+#define vec_array(T, x) \
 (*({									\
- 	auto __T = (T);							\
-	(vec_eltype(__T)(*)[vec_length(__T)])((T)->data);		\
+ 	auto __x = (x);						\
+	(vec_eltype(__x)(*)[vec_length(__x)])((x)->data);		\
 }))
 #else
 // work around a compiler bug
 // GCC: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91038
 extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
-#define vec_array(T)							\
+#define vec_array(T, x)							\
 (*(({									\
- 	auto __T = (T);							\
-	vec_array_tmp.N = __T->N;					\
-	vec_array_tmp.data = __T->data;					\
-}), (vec_eltype(T)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
+ 	auto __x = (x);						\
+	vec_array_tmp.N = __x->N;					\
+	vec_array_tmp.data = __x->data;					\
+}), (vec_eltype(x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
 #endif
 
-#define vec_access(T4, i)						\
+#define vec_access(T, x4, i)						\
 (*({									\
- 	auto __T4 = (T4);						\
+ 	auto __x4 = (x4);						\
 	ssize_t __i = (i);						\
-	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(__T4)));		\
-	&(vec_array(__T4)[__i]);					\
+	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(__x4)));		\
+	&(vec_array(T, __x4)[__i]);					\
 }))
 
-#define vec_push(v2, x2) 						\
+#define vec_push(T, v2, x2) 						\
 ({ 									\
- 	auto __T3 = (v2);						\
+	vec(T) **__T3 = (v2);						\
 	ssize_t __N = vec_length(*__T3);				\
-	NULL_CHECK(vec_realloc(__T3, __N + 1));				\
-	vec_access(*__T3, __N) = (x2);					\
+	NULL_CHECK(vec_realloc(T, __T3, __N + 1));			\
+	vec_access(T, *__T3, __N) = (x2);				\
 })
 
-#define vec_pop(v2) 							\
+#define vec_pop(T, v2) 							\
 ({ 									\
- 	auto __T2 = (v2);						\
+	vec(T) **__T2 = (v2);						\
 	ssize_t __N = vec_length(*__T2);				\
 	CHECK(0 < __N);							\
-	auto __r = vec_access(*__T2, __N - 1);				\
-	NULL_CHECK(vec_realloc(__T2, __N - 1));				\
+	auto __r = vec_access(T, *__T2, __N - 1);			\
+	NULL_CHECK(vec_realloc(T, __T2, __N - 1));			\
  	__r;								\
 })
 

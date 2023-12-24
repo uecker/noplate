@@ -27,7 +27,7 @@ nat nat_init(int i)
 	if (NULL == x)
 		goto err;
 
-	vec_access(x, 0) = i;
+	vec_access(nat_base_t, x, 0) = i;
 err:
 	return x;
 }
@@ -39,7 +39,9 @@ nat nat_dup(const nat x)
 	if (NULL == n)
 		goto err;
 
-	memcpy(vec_array(n), vec_array(x), vec_sizeof(x));
+	memcpy(	vec_array(nat_base_t, n),
+		vec_array(nat_base_t, x),
+		vec_sizeof(nat_base_t, x));
 
 err:
 	return n;
@@ -64,17 +66,17 @@ extern nat nat_mul(const nat a, const nat b)
 
 		for (int j = 0; j < B; j++) {
 
-			nat_ext_t aa = vec_access(a, i);
-			nat_ext_t bb = vec_access(b, j);
+			nat_ext_t aa = vec_access(nat_base_t, a, i);
+			nat_ext_t bb = vec_access(nat_base_t, b, j);
 
 			nat_ext_t tmp = carry + aa * bb;
 
 			carry = tmp >> bitsof(nat_base_t);
 
-			vec_access(p, i + j) += tmp;
+			vec_access(nat_base_t, p, i + j) += tmp;
 		}
 
-		vec_access(p, i + B) = carry;
+		vec_access(nat_base_t, p, i + B) = carry;
 	}
 err:
 	return p;	
@@ -97,10 +99,10 @@ extern nat nat_add(const nat a, const nat b)
 
 	for (int i = 0; i < C; i++) {
 
-		nat_base_t aa = (i < A) ? vec_access(a, i) : 0;
-		nat_base_t bb = (i < B) ? vec_access(b, i) : 0;
+		nat_base_t aa = (i < A) ? vec_access(nat_base_t, a, i) : 0;
+		nat_base_t bb = (i < B) ? vec_access(nat_base_t, b, i) : 0;
 
-		vec_access(p, i) = (nat_base_t)(aa + bb + carry);	// wraps
+		vec_access(nat_base_t, p, i) = (nat_base_t)(aa + bb + carry);	// wraps
 
 		if (carry)
 			carry = (aa >= maxof(nat_base_t) - bb);
@@ -111,7 +113,7 @@ extern nat nat_add(const nat a, const nat b)
 	if (!carry) {
 
 		// assert(0 == vec_access(p, C - 1));
-		vec_pop(&p);
+		vec_pop(nat_base_t, &p);
 	}
 
 err:
@@ -134,7 +136,7 @@ string* nat_2string(const nat x)
 
 	for (int i = X - 1; i >= 0; i--) {
 
-		nat_base_t v = vec_access(x, i);
+		nat_base_t v = vec_access(nat_base_t, x, i);
 
 		for (int j = bitsof(nat_base_t) - 1; j >= 0; j--) {
 

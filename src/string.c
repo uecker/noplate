@@ -20,8 +20,8 @@ static string* string_init0(int len, const char c[static len])
 	if (NULL == s)
 		goto err;
 
-	memcpy(vec_array(s), c, len);
-	vec_access(s, len) = '\0';
+	memcpy(vec_array(char, s), c, len);
+	vec_access(char, s, len) = '\0';
 
 err:
 	return (string*)s;
@@ -49,9 +49,9 @@ string* string_concat(const string_view a, const string_view b)
 	if (NULL == x)
 		goto err;
 
-	memcpy(&vec_access(x, 0), string_cstr(&a), alen);
-	memcpy(&vec_access(x, alen), string_cstr(&b), blen);
-	vec_access(x, alen + blen) = '\0';
+	memcpy(&vec_access(char, x, 0), string_cstr(&a), alen);
+	memcpy(&vec_access(char, x, alen), string_cstr(&b), blen);
+	vec_access(char, x, alen + blen) = '\0';
 
 err:
 	return (string*)x;
