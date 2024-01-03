@@ -148,7 +148,7 @@ int main()
 
 	free(s);
 
-	/*const*/ string* s3 = string_init("hallo");
+	string* s3 = string_init("hallo");
 
 	// this assignment is not checked by compilers
 	// char (*slice)[3]

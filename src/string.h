@@ -12,9 +12,15 @@
 vec_decl(char);
 view_decl(char);
 
+// #define STRING_OPAQUE
+#ifdef STRING_OPAQUE
 struct string;
 typedef vec(char) string_priv;
 typedef struct string string;
+#else
+typedef vec(char) string;
+typedef string string_priv;
+#endif
 typedef view(char) string_view;
 
 #define string_check(x)	\
@@ -23,6 +29,7 @@ typedef view(char) string_view;
 	CHECK('\0' == vec_array(char, __x)[string_length(__x)]); __x; 	\
 })
 
+#ifdef STRING_OPAQUE
 #define STRING_UNWRAP(x)						\
 ({ 									\
 	auto __y = (x);							\
@@ -34,6 +41,9 @@ typedef view(char) string_view;
 		string_view*: __y,					\
 		const string_view*: __y);				\
 })
+#else
+#define STRING_UNWRAP(x) (x)
+#endif
 
 #define string_cstr(x)		(vec_array(char, string_check(STRING_UNWRAP(x))))
 #define string_view(x) 		(vec_view(char, STRING_UNWRAP(x)))
