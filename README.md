@@ -1,5 +1,6 @@
 
 noplate library
+===============
 
 *experimental* generic type-safe container data structures for C
 
@@ -39,16 +40,20 @@ a pointer.
 
 
 Example 1 (vector of integers)
+------------------------------
+
+https://godbolt.org/z/Eos9E5s9o
+
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
 
-	vec_push(&v, 1);
-	vec_push(&v, 3);
+	vec_push(int, &v, 1);
+	vec_push(int, &v, 3);
 
-	vec_access(v, 1)++;
+	vec_access(int, v, 1)++;
 
-	vec_access(v, 10) = 1;	// run-time error!
+	vec_access(int, v, 10) = 1;	// run-time error!
 
 	free(v);
 
@@ -56,13 +61,14 @@ Example 1 (vector of integers)
 
 
 Example 2 (vector of strings)
+-----------------------------
 
 	typedef string* string_ptr;
 	vec_decl(string_ptr)
 	vec(string_ptr)* s = vec_alloc(string_ptr);
 
-	vec_push(&s, string_init(" Du!"));
-	vec_push(&s, string_init("Hallo"));
+	vec_push(string_ptr, &s, string_init(" Du!"));
+	vec_push(string_ptr, &s, string_init("Hallo"));
 
 	int cmp2(const string_ptr* a, const string_ptr* b)
 	{
@@ -72,14 +78,14 @@ Example 2 (vector of strings)
 	vec_sort(s, cmp2);
 
 	while (0 < vec_length(s))
-		free(vec_pop(&s));
+		free(vec_pop(string_ptr, &s));
 
 	free(s);
 
 
 
-
 Example 3 (array slice)
+-----------------------
 
 	string* s = string_init("hallo");
 
@@ -92,6 +98,7 @@ Example 3 (array slice)
 
 
 Example 4 (byte-level loads and stores)
+---------------------------------------
 
 	char buf[sizeof(int)];
 
