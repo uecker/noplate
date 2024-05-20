@@ -61,11 +61,16 @@ https://godbolt.org/z/Eos9E5s9o
 Example 3 (strings)
 -------------------
 
-https://godbolt.org/z/zocMqWG7s
+https://godbolt.org/z/6oo6131jr
 
 
+Example 4 (maybe)
+-----------------
 
-Example 3 (vector of strings)
+https://godbolt.org/z/Evsfhv3no
+
+
+Example 5 (vector of strings)
 -----------------------------
 
 	typedef string* string_ptr;
@@ -89,7 +94,7 @@ Example 3 (vector of strings)
 
 
 
-Example 4 (array slice)
+Example 6 (array slice)
 -----------------------
 
 	string* s = string_init("hallo");
@@ -102,7 +107,7 @@ Example 4 (array slice)
 
 
 
-Example 5 (byte-level loads and stores)
+Example 7 (byte-level loads and stores)
 ---------------------------------------
 
 	char buf[sizeof(int)];
