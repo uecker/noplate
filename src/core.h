@@ -71,9 +71,11 @@
 #define choose_ice(c, A, B)	sizeof(choose_type(c, nil(char[(A)]), nil(char[(B)])))
 
 #if defined(__clang__) && !defined(__CUDACC__)
+#if __has_extension(blocks)
 #define NESTED(RET, NAME, ARGS) \
 	RET (^NAME)ARGS = ^ARGS
 #define CLOSURE_TYPE(x) (^x)
+#endif
 #else
 #define NESTED(RET, NAME, ARGS) \
 	RET NAME ARGS
