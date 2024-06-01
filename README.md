@@ -60,11 +60,11 @@ https://godbolt.org/z/EzejPPM35
 Example 3 (strings)
 -------------------
 
-https://godbolt.org/z/ooWj88dsY
+https://godbolt.org/z/KE4o17fnW
 
     string *a = string_init("abc");
     string *b = string_printf("%d", 3);
-    string *c = string_concat(string_view(a), string_view(b));
+    string *c = string_concat(a, b);
 
     printf("%s\n", string_cstr(c));
 

@@ -21,7 +21,7 @@ typedef struct string string;
 typedef vec(char) string;
 typedef string string_priv;
 #endif
-typedef view(char) string_view;
+typedef view(char) strview;
 
 #define string_check(x)	\
 ({ 									\
@@ -38,8 +38,8 @@ typedef view(char) string_view;
 		const string_priv*: __y, 				\
 		string*: (string_priv*)__y,				\
 		const string*: (const string_priv*)__y,			\
-		string_view*: __y,					\
-		const string_view*: __y);				\
+		strview*: __y,						\
+		const strview*: __y);					\
 })
 #else
 #define STRING_UNWRAP(x) (x)
@@ -50,9 +50,9 @@ typedef view(char) string_view;
 #define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
 
 
-inline string* string_alloc(void)
+inline string *string_alloc(void)
 { 
-	string_priv* s = vec_alloc(char);
+	string_priv *s = vec_alloc(char);
 
 	if (NULL == s)
 		goto err;
@@ -67,11 +67,14 @@ extern string* string_init(const char* c);
 
 #define STRING(x) (string_init(x))
 
-extern string* string_dup(const string_view x);
-extern string* string_concat(const string_view a, const string_view b);
-extern void string_append(string** a, const string_view b);
-extern string* string_printf(const char* fmt, ...);
+extern string *string_dup(const string *s);
+extern string *string_concat(const string *a, const string *b);
+extern void string_append(string **a, const string *b);
+extern string *string_printf(const char* fmt, ...);
 
+extern void string_append_view(string **a, const strview b);
+extern string *strview_dup(const strview v);
+extern string *strview_concat(const strview a, const strview b);
 
 #endif // __STRING_H
 

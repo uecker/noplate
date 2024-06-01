@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include "array.h"
 #include "string.h"
 
 
@@ -33,16 +34,21 @@ string* string_init(const char* c)
 }
 
 
-string* string_dup(const string_view x)
+string* strview_dup(const strview x)
 {
 	return string_init0(string_length(&x), string_cstr(&x));
 }
 
-void string_append(string** a, const string_view b)
+string* string_dup(const string *x)
+{
+	return string_init0(string_length(x), string_cstr(x));
+}
+
+void string_append_view(string **a, const strview b)
 {
 	ssize_t blen = string_length(&b);
 
-	string_priv* x = STRING_UNWRAP(*a);
+	string_priv *x = STRING_UNWRAP(*a);
 	ssize_t alen = string_length(x);
 	vec_realloc(char, &x, alen + blen + 1);
 
@@ -55,12 +61,17 @@ void string_append(string** a, const string_view b)
 err:
 }
 
-string* string_concat(const string_view a, const string_view b)
+void string_append(string **a, const string *b)
+{
+	string_append_view(a, string_view((string*)b));
+}
+
+string* strview_concat(const strview a, const strview b)
 {
 	ssize_t alen = string_length(&a);
 	ssize_t blen = string_length(&b);
 
-	string_priv* x = vec_alloc_n(char, alen + blen + 1);
+	string_priv *x = vec_alloc_n(char, alen + blen + 1);
 
 	if (NULL == x)
 		goto err;
@@ -73,6 +84,13 @@ err:
 	return (string*)x;
 }
 
+
+string* string_concat(const string *a, const string *b)
+{
+	return strview_concat(string_view((string*)a), string_view((string*)b));
+}
+
+
 string* string_printf(const char* fmt, ...)
 {
 	va_list ap;
@@ -83,7 +101,7 @@ string* string_printf(const char* fmt, ...)
 
 	va_end(ap);
 
-	string_priv* s = NULL;
+	string_priv *s = NULL;
 
 	if (len < 0)
 		goto err;
