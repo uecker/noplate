@@ -59,6 +59,7 @@
 #define vec_array(T, x) \
 (*({									\
 	auto __x = (x);							\
+	_Static_assert(same_type_p(T, vec_eltype(__x)));		\
 	(vec_eltype(__x)(*)[vec_length(__x)])((x)->data);		\
 }))
 #else
@@ -67,7 +68,8 @@
 extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
 #define vec_array(T, x)							\
 (*(({									\
-	auto __x = (x);						\
+	auto __x = (x);							\
+	_Static_assert(same_type_p(T, vec_eltype(__x)));		\
 	vec_array_tmp.N = __x->N;					\
 	vec_array_tmp.data = __x->data;					\
 }), (vec_eltype(x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
