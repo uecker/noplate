@@ -77,26 +77,33 @@ Example 4 (maybe)
 
 https://godbolt.org/z/Evsfhv3no
 
+    maybe(int) divide(int a, int b)
+    {
+        return b ? maybe_ok(int, a / b) : maybe_fail(int);
+    }
+
 
 Example 5 (vector of strings)
 -----------------------------
 
-	typedef string* string_ptr;
-	vec_decl(string_ptr)
-	vec(string_ptr)* s = vec_alloc(string_ptr);
+https://godbolt.org/z/qfGxvev38
 
-	vec_push(string_ptr, &s, string_init(" Du!"));
-	vec_push(string_ptr, &s, string_init("Hallo"));
+	typedef string* strptr;
+	vec_decl(strptr)
+	vec(strptr)* s = vec_alloc(strptr);
 
-	int cmp2(const string_ptr* a, const string_ptr* b)
+	vec_push(strptr, &s, string_init(" Du!"));
+	vec_push(strptr, &s, string_init("Hallo"));
+
+	int cmp2(const strptr* a, const strptr* b)
 	{
 		return strcmp(string_cstr(*a), string_cstr(*b));
 	}
 
-	vec_sort(s, cmp2);
+	vec_sort(strptr, s, cmp2);
 
 	while (0 < vec_length(s))
-		free(vec_pop(string_ptr, &s));
+		free(vec_pop(strptr, &s));
 
 	free(s);
 
@@ -105,22 +112,24 @@ Example 5 (vector of strings)
 Example 6 (array slice)
 -----------------------
 
-	string* s = string_init("hallo");
+https://godbolt.org/z/noKGz6nWj
 
-	auto slice = &array_slice(string_cstr(s), 1, 1 + 3);
+    char str[] = "Hallo";
+	auto slice = &array_slice(str, 1, 1 + 3);
 	(*slice)[0] = 'A';
 	(*slice)[1] = 'L';
 	(*slice)[2] = 'L';
 
 
 
-
 Example 7 (byte-level loads and stores)
 ---------------------------------------
 
-	char buf[sizeof(int)];
+https://godbolt.org/z/xeYfn17zG
 
-	poke(int, &buf, 1);
+	char buf[sizeof(int)];
+	poke(int, &buf, 33);
+    int i = peek(int, &buf);
 
 
 
