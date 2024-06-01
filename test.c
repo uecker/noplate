@@ -125,13 +125,8 @@ int main()
 
 	string* ss = NULL_CHECK(string_alloc());
     
-	for (int i = 0; i < (int)vec_length(s); i++) {
-
-		string* t = string_concat(string_view(ss),
-					string_view(vec_access(string_ptr, s, vec_length(s) - 1 - i)));
-		free(ss);
-		ss = t;
-	}
+	for (int i = 0; i < (int)vec_length(s); i++)
+		string_append(&ss, string_view(vec_access(string_ptr, s, vec_length(s) - 1 - i)));
 
 	const string* s2 = ss;
 	const char* x = string_cstr(s2);
@@ -141,7 +136,7 @@ int main()
 	assert(vec_length(s) == array_lengthof(vec_array(string_ptr, s)));
 
 	free(v);
-	free(ss);
+	xfree(ss);
 
 	while (0 < vec_length(s))
 		free(vec_pop(string_ptr, &s));

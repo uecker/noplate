@@ -1,4 +1,4 @@
-/* Copyright 2021-2022. Martin Uecker
+/* Copyright 2021-2024. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -25,13 +25,13 @@ typedef view(char) string_view;
 
 #define string_check(x)	\
 ({ 									\
-	auto __x = (x);							\
-	CHECK('\0' == vec_array(char, __x)[string_length(__x)]); __x; 	\
+	auto __s = (x);							\
+	CHECK('\0' == vec_array(char, __s)[string_length(__s)]); __s; 	\
 })
 
 #ifdef STRING_OPAQUE
 #define STRING_UNWRAP(x)						\
-({ 									\
+({									\
 	auto __y = (x);							\
 	_Generic(__y,							\
 		string_priv*: __y, 					\
@@ -48,6 +48,7 @@ typedef view(char) string_view;
 #define string_cstr(x)		(vec_array(char, string_check(STRING_UNWRAP(x))))
 #define string_view(x) 		(vec_view(char, STRING_UNWRAP(x)))
 #define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
+
 
 inline string* string_alloc(void)
 { 
@@ -68,6 +69,7 @@ extern string* string_init(const char* c);
 
 extern string* string_dup(const string_view x);
 extern string* string_concat(const string_view a, const string_view b);
+extern void string_append(string** a, const string_view b);
 extern string* string_printf(const char* fmt, ...);
 
 

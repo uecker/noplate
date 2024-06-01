@@ -42,8 +42,7 @@ a pointer.
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/Eos9E5s9o
-
+https://godbolt.org/z/EzejPPM35
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -61,7 +60,16 @@ https://godbolt.org/z/Eos9E5s9o
 Example 3 (strings)
 -------------------
 
-https://godbolt.org/z/6oo6131jr
+https://godbolt.org/z/ooWj88dsY
+
+    string *a = string_init("abc");
+    string *b = string_printf("%d", 3);
+    string *c = string_concat(string_view(a), string_view(b));
+
+    printf("%s\n", string_cstr(c));
+
+    assert(string_length(c) + 1 == sizeof(string_cstr(c)));
+
 
 
 Example 4 (maybe)

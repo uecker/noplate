@@ -38,6 +38,22 @@ string* string_dup(const string_view x)
 	return string_init0(string_length(&x), string_cstr(&x));
 }
 
+void string_append(string** a, const string_view b)
+{
+	ssize_t blen = string_length(&b);
+
+	string_priv* x = STRING_UNWRAP(*a);
+	ssize_t alen = string_length(x);
+	vec_realloc(char, &x, alen + blen + 1);
+
+	if (NULL == x)
+		goto err;
+
+	memcpy(&vec_access(char, x, alen), string_cstr(&b), blen);
+	vec_access(char, x, alen + blen) = '\0';
+	*a = (string*)x;
+err:
+}
 
 string* string_concat(const string_view a, const string_view b)
 {
