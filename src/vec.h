@@ -28,7 +28,6 @@
 #define vec_realloc(T, x, M)						\
 ({									\
 	vec(T) **__Ta = (x);						\
-	_Static_assert(same_type_p(T, vec_eltype(*__Ta)));		\
 	(void)TYPE_CHECK(typeof(typeof(vec_eltype(*__Ta)[])*), 		\
 			&(*__Ta)->data);				\
 	(*__Ta)->N = (M);						\
@@ -110,10 +109,11 @@ extern void noplate_qsort(void* ptr, size_t N, size_t si, noplate_qsort_cmp_func
 #endif
 #endif
 
-#define vec_sort(v2, cmp)						\
+#define vec_sort(T, v2, cmp)						\
 ({									\
  	auto __T1 = (v2);						\
 	typedef vec_eltype(__T1) __ET;					\
+	_Static_assert(same_type_unq_p(T, __ET), "");			\
 	struct { int CLOSURE_TYPE(xcmp)(const __ET*, const __ET*); }	\
 		__d = { (cmp) };					\
 	NESTED(int, __cmp, (const void* a, const void* b, void* _d))	\

@@ -114,14 +114,14 @@ int main()
 		return *a - *b;
 	};
 
-	vec_sort(v, cmp);
+	vec_sort(int, v, cmp);
 
 	NESTED(int, cmp2, (const string_ptr* a, const string_ptr* b))
 	{ 
 		return strcmp(string_cstr(*a), string_cstr(*b));
 	};
 
-	vec_sort(s, cmp2);
+	vec_sort(string_ptr, s, cmp2);
 
 	string* ss = NULL_CHECK(string_alloc());
     
