@@ -14,15 +14,15 @@
 
 extern inline string* string_alloc(void);
 
-static string* string_init0(int len, const char c[static len])
+static string* string_init0(int len, const char8_t c[static len])
 {
-	string_priv* s = vec_alloc_n(char, len + 1);
+	string_priv* s = vec_alloc_n(char8_t, len + 1);
 
 	if (NULL == s)
 		goto err;
 
-	memcpy(vec_array(char, s), c, len);
-	vec_access(char, s, len) = '\0';
+	memcpy(vec_array(char8_t, s), c, len);
+	vec_access(char8_t, s, len) = '\0';
 
 err:
 	return (string*)s;
@@ -30,18 +30,18 @@ err:
 
 string* string_init(const char* c)
 {
-	return string_init0(strlen(c), c);
+	return string_init0(strlen(c), (const char8_t*)c);
 }
 
 
 string* strview_dup(const strview x)
 {
-	return string_init0(string_length(&x), string_cstr(&x));
+	return string_init0(string_length(&x), string_utf8(&x));
 }
 
 string* string_dup(const string *x)
 {
-	return string_init0(string_length(x), string_cstr(x));
+	return string_init0(string_length(x), string_utf8(x));
 }
 
 void string_append_view(string **a, const strview b)
@@ -50,13 +50,13 @@ void string_append_view(string **a, const strview b)
 
 	string_priv *x = STRING_UNWRAP(*a);
 	ssize_t alen = string_length(x);
-	vec_realloc(char, &x, alen + blen + 1);
+	vec_realloc(char8_t, &x, alen + blen + 1);
 
 	if (NULL == x)
 		goto err;
 
-	memcpy(&vec_access(char, x, alen), string_cstr(&b), blen);
-	vec_access(char, x, alen + blen) = '\0';
+	memcpy(&vec_access(char8_t, x, alen), string_cstr(&b), blen);
+	vec_access(char8_t, x, alen + blen) = '\0';
 	*a = (string*)x;
 err:
 }
@@ -71,14 +71,14 @@ string* strview_concat(const strview a, const strview b)
 	ssize_t alen = string_length(&a);
 	ssize_t blen = string_length(&b);
 
-	string_priv *x = vec_alloc_n(char, alen + blen + 1);
+	string_priv *x = vec_alloc_n(char8_t, alen + blen + 1);
 
 	if (NULL == x)
 		goto err;
 
-	memcpy(&vec_access(char, x, 0), string_cstr(&a), alen);
-	memcpy(&vec_access(char, x, alen), string_cstr(&b), blen);
-	vec_access(char, x, alen + blen) = '\0';
+	memcpy(&vec_access(char8_t, x, 0), string_cstr(&a), alen);
+	memcpy(&vec_access(char8_t, x, alen), string_cstr(&b), blen);
+	vec_access(char8_t, x, alen + blen) = '\0';
 
 err:
 	return (string*)x;
@@ -106,14 +106,14 @@ string* string_printf(const char* fmt, ...)
 	if (len < 0)
 		goto err;
 
-	s = vec_alloc_n(char, len + 1);
+	s = vec_alloc_n(char8_t, len + 1);
 
 	if (NULL == s)
 		goto err;
 
 	va_start(ap, fmt);
 
-	int rlen = vsnprintf(s->data, s->N, fmt, ap);
+	int rlen = vsnprintf((char*)s->data, s->N, fmt, ap);
 
 	va_end(ap);
 

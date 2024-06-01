@@ -9,24 +9,26 @@
 #include "vec.h"
 #include "view.h"
 
-vec_decl(char);
+typedef unsigned char char8_t;
+vec_decl(char8_t);
+view_decl(char8_t);
 view_decl(char);
 
 // #define STRING_OPAQUE
 #ifdef STRING_OPAQUE
 struct string;
-typedef vec(char) string_priv;
+typedef vec(char8_t) string_priv;
 typedef struct string string;
 #else
-typedef vec(char) string;
+typedef vec(char8_t) string;
 typedef string string_priv;
 #endif
-typedef view(char) strview;
+typedef view(char8_t) strview;
 
 #define string_check(x)	\
 ({ 									\
 	auto __s = (x);							\
-	CHECK('\0' == vec_array(char, __s)[string_length(__s)]); __s; 	\
+	CHECK('\0' == vec_array(char8_t, __s)[string_length(__s)]); __s; \
 })
 
 #ifdef STRING_OPAQUE
@@ -45,19 +47,20 @@ typedef view(char) strview;
 #define STRING_UNWRAP(x) (x)
 #endif
 
-#define string_cstr(x)		(vec_array(char, string_check(STRING_UNWRAP(x))))
-#define string_view(x) 		(vec_view(char, STRING_UNWRAP(x)))
+#define string_utf8(x)		(vec_array(char8_t, string_check(STRING_UNWRAP(x))))
+#define string_cstr(x)		(array_cast(char, string_utf8(x)))
+#define string_view(x) 		(vec_view(char8_t, STRING_UNWRAP(x)))
 #define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
 
 
 inline string *string_alloc(void)
 { 
-	string_priv *s = vec_alloc(char);
+	string_priv *s = vec_alloc(char8_t);
 
 	if (NULL == s)
 		goto err;
 
-	vec_push(char, &s, '\0');
+	vec_push(char8_t, &s, '\0');
 err:
 	return (string*)s;	// !
 }

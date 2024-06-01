@@ -33,6 +33,13 @@
 	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 })
 
+#define array_cast(S, x)  					\
+*({								\
+	auto __y = &(x);					\
+	typedef typeof(S) __S;					\
+	CHECK(sizeof(__S) == sizeof((*__y)[0]));		\
+	(__S(*)[array_lengthof(*__y)])__y;			\
+})
 
 // note, this can not fail for non-arrays
 #define _array_element(x)									\
