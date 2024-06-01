@@ -126,7 +126,7 @@ int main()
 	string* ss = NULL_CHECK(string_alloc());
     
 	for (int i = 0; i < (int)vec_length(s); i++)
-		string_append_view(&ss, string_view(vec_access(string_ptr, s, vec_length(s) - 1 - i)));
+		string_append(&ss, vec_access(string_ptr, s, vec_length(s) - 1 - i));
 
 	const string* s2 = ss;
 	const char* x = string_cstr(s2);
