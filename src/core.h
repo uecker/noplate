@@ -36,6 +36,7 @@
 #define _Array(x, N) typeof(typeof(x)[N])
 
 
+
 #define TYPE_CHECK(T, x)	(1 ? (x) : (T){0})
 #define containerof(x, T, member)	\
 	((T*)((char*)TYPE_CHECK(typeof(&((T*)0)->member), x) - offsetof(T, member)))
@@ -43,9 +44,12 @@
 #define nil(T) ((typeof(T)){ 0 })
 #define nil2(T) ((typeof(T)){ { 0 } })
 
+#define CONST(x) (struct { const typeof(x) data; }){ x }.data
+
 #define NODECL(T) typeof(({ nil(T); }))
 
 //#define nil(T) (*((typeof(T)*){ 0 }))
+#define same_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
 #define has_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
 
 // seems to work on both clang and gcc

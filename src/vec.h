@@ -10,7 +10,7 @@
 
 
 #ifdef TAGCOMPAT
-#define vec(T) CONCAT(struct vec_, T) { ssize_t N; T data[]; }
+#define vec(T) CONCAT(struct vec_, T) { ssize_t N; [[gnu::counted_by(N)]] T data[]; }
 #define vec_decl(T)
 #else
 #define vec(T) CONCAT(struct vec_, T)
@@ -28,6 +28,7 @@
 #define vec_realloc(T, x, M)						\
 ({									\
 	vec(T) **__Ta = (x);						\
+	_Static_assert(same_type_p(T, vec_eltype(*__Ta)));		\
 	(void)TYPE_CHECK(typeof(typeof(vec_eltype(*__Ta)[])*), 		\
 			&(*__Ta)->data);				\
 	(*__Ta)->N = (M);						\
@@ -57,7 +58,7 @@
 #if (GCC_VERSION >= 110300) || defined __clang__
 #define vec_array(T, x) \
 (*({									\
- 	auto __x = (x);						\
+	auto __x = (x);							\
 	(vec_eltype(__x)(*)[vec_length(__x)])((x)->data);		\
 }))
 #else
@@ -66,7 +67,7 @@
 extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
 #define vec_array(T, x)							\
 (*(({									\
- 	auto __x = (x);						\
+	auto __x = (x);						\
 	vec_array_tmp.N = __x->N;					\
 	vec_array_tmp.data = __x->data;					\
 }), (vec_eltype(x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
