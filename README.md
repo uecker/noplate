@@ -57,7 +57,7 @@ https://godbolt.org/z/EzejPPM35
 	free(v);
 
 
-Example 3 (strings)
+Example 2 (strings)
 -------------------
 
 https://godbolt.org/z/KE4o17fnW
@@ -72,7 +72,7 @@ https://godbolt.org/z/KE4o17fnW
 
 
 
-Example 4 (maybe)
+Example 3 (maybe)
 -----------------
 
 https://godbolt.org/z/Evsfhv3no
@@ -81,6 +81,26 @@ https://godbolt.org/z/Evsfhv3no
     {
         return b ? maybe_ok(int, a / b) : maybe_fail(int);
     }
+
+
+Example 4 (product and sum)
+------------------------------
+
+    https://godbolt.org/z/zqGPvGb1a
+
+    typedef product(int, float) product_name(int, float);
+    typedef product(int, int) product_name(int, int);
+
+	auto ifl = product_init(int, float, (3, 0.1));
+	auto si = sum_init(product_name(int, float), string_ptr, ifl);
+
+	NESTED(int, add1, (product(int, float) ifl)) { return product_car(ifl) + 1; };
+	NESTED(int, slen, (string_ptr x)) { return (int)string_length(x); };
+
+	int si2 = sum_choice(si, add1, slen);
+
+	assert(4 == si2);
+
 
 
 Example 5 (vector of strings)
