@@ -1,4 +1,4 @@
-/* Copyright 2021-2023. Martin Uecker
+/* Copyright 2021-2024. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -18,6 +18,13 @@
 #define TAGCOMPAT
 #endif
 #endif
+
+#if (GCC_VERSION >= 150000) && !defined __clang__
+#define COUNTED_BY(N) gnu::counted_by(N)
+#else
+#define COUNTED_BY(N)
+#endif
+
 
 #define _CONCAT1(A, B) A ## B
 #define CONCAT(A, B) _CONCAT1(A, B)

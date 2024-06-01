@@ -1,4 +1,4 @@
-/* Copyright 2021-2023. Martin Uecker
+/* Copyright 2021-2024. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -10,11 +10,11 @@
 
 
 #ifdef TAGCOMPAT
-#define vec(T) CONCAT(struct vec_, T) { ssize_t N; [[gnu::counted_by(N)]] T data[]; }
+#define vec(T) CONCAT(struct vec_, T) { ssize_t N; [[COUNTED_BY(N)]] T data[]; }
 #define vec_decl(T)
 #else
 #define vec(T) CONCAT(struct vec_, T)
-#define vec_decl(T) vec(T) { ssize_t N; T data[]; }
+#define vec_decl(T) vec(T) { ssize_t N; [[COUNTED_BY(N)]] T data[]; }
 #endif
 
 #define vec_eltype(T) typeof((T)->data[0])
