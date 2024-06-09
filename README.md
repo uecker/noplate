@@ -57,7 +57,25 @@ https://godbolt.org/z/EzejPPM35
 	free(v);
 
 
-Example 2 (strings)
+Example 2 (view)
+----------------
+
+https://godbolt.org/z/eE597x4sM
+
+    void sum(view(int) v)
+    {
+        int sum = 0;
+        for (int i  = 0; i < vec_length(&v); i++)
+            sum += vec_array(int, &v)[i];
+        return sum;
+    }
+
+	vec(int)* v = vec_alloc(int);
+
+	int s = sum(vec_view(int, v));
+
+
+Example 3 (strings)
 -------------------
 
 https://godbolt.org/z/KE4o17fnW
@@ -71,8 +89,16 @@ https://godbolt.org/z/KE4o17fnW
     assert(string_length(c) + 1 == sizeof(string_cstr(c)));
 
 
+Example 4 (strview)
+-------------------
 
-Example 3 (maybe)
+    string s = ...
+    strview v = string_view(s);
+
+	printf("%s\n", string_cstr(&v));
+
+
+Example 5 (maybe)
 -----------------
 
 https://godbolt.org/z/Evsfhv3no
@@ -83,10 +109,10 @@ https://godbolt.org/z/Evsfhv3no
     }
 
 
-Example 4 (product and sum)
+Example 6 (product and sum)
 ------------------------------
 
-    https://godbolt.org/z/zqGPvGb1a
+https://godbolt.org/z/zqGPvGb1a
 
     typedef product(int, float) product_name(int, float);
     typedef product(int, int) product_name(int, int);
@@ -103,7 +129,7 @@ Example 4 (product and sum)
 
 
 
-Example 5 (vector of strings)
+Example 7 (vector of strings)
 -----------------------------
 
 https://godbolt.org/z/qfGxvev38
@@ -129,7 +155,7 @@ https://godbolt.org/z/qfGxvev38
 
 
 
-Example 6 (array slice)
+Example 8 (array slice)
 -----------------------
 
 https://godbolt.org/z/noKGz6nWj
@@ -142,7 +168,7 @@ https://godbolt.org/z/noKGz6nWj
 
 
 
-Example 7 (byte-level loads and stores)
+Example 9 (byte-level loads and stores)
 ---------------------------------------
 
 https://godbolt.org/z/xeYfn17zG
