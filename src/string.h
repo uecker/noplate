@@ -74,6 +74,7 @@ extern string *string_dup(const string *s);
 extern string *string_concat(const string *a, const string *b);
 extern void string_append(string **a, const string *b);
 extern string *string_printf(const char* fmt, ...);
+extern void string_puts(string **a, const char *cstr);
 
 extern void string_append_view(string **a, const strview b);
 extern string *strview_dup(const strview v);

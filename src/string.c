@@ -52,13 +52,21 @@ void string_append_view(string **a, const strview b)
 	ssize_t alen = string_length(x);
 	vec_realloc(char8_t, &x, alen + blen + 1);
 
+	*a = (string*)x;
+
 	if (NULL == x)
 		goto err;
 
 	memcpy(&vec_access(char8_t, x, alen), string_cstr(&b), blen);
 	vec_access(char8_t, x, alen + blen) = '\0';
-	*a = (string*)x;
 err:
+}
+
+void string_puts(string **a, const char *str)
+{
+	char8_t buf[strlen(str) + 1];
+	memcpy(buf, str, sizeof buf);
+	string_append_view(a, array_view(char8_t, buf));
 }
 
 void string_append(string **a, const string *b)
