@@ -23,5 +23,20 @@
 
 #define vec_view(T, x)	array_view(T, vec_array(T, x))
 
+#define vec_append(T, a, b) 						\
+({									\
+	vec(T) **__v = (a);						\
+	view(T) __w = (b);						\
+	ssize_t alen = vec_length(*__v);				\
+	ssize_t blen = vec_length(&__w);				\
+	vec_realloc(T, __v, alen + blen);				\
+	if (NULL != *__v) {						\
+		memcpy(&vec_access(T, *__v, alen), 			\
+			&vec_access(T, &__w, 0), blen * sizeof(T));	\
+	}								\
+	*__v;								\
+})
+
+
 #endif
 

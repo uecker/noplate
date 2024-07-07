@@ -79,12 +79,18 @@ int main()
 	vec_push(int, &v, 3);
 	vec_push(int, &v, 8);
 
-	vec(string_ptr)* s = NULL_CHECK(vec_alloc(string_ptr));
+	vec(int)* w = NULL_CHECK(vec_alloc(int));
 
-	vec_push(string_ptr, &s, string_init(" Du!"));
-	vec_push(string_ptr, &s, string_init("Hallo"));
+	vec_push(int, &w, 1);
+	vec_push(int, &w, 3);
+	vec_push(int, &w, 8);
 
+	vec_append(int, &v, vec_view(int, w));
 	vec_access(int, v, 1)++;
+
+	for (int i = 0; i < (int)vec_length(v); i++)
+		printf("%d\n", vec_access(int, v, i));
+
 
 
 	float bb[4];
@@ -108,6 +114,13 @@ int main()
 	vec_push((view(int)*){ &vi }, 3);
 	vec_push(&(view(int)*){ &vi }, 3);
 #endif
+
+
+	vec(string_ptr)* s = NULL_CHECK(vec_alloc(string_ptr));
+
+	vec_push(string_ptr, &s, string_init(" Du!"));
+	vec_push(string_ptr, &s, string_init("Hallo"));
+
 
 	NESTED(int, cmp, (const int* a, const int* b))
 	{ 
