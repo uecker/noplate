@@ -59,7 +59,7 @@
 (*({									\
 	auto __x = (x);							\
 	_Static_assert(same_type_unq_p(T, vec_eltype(__x)), "");	\
-	(vec_eltype(__x)(*)[vec_length(__x)])((x)->data);		\
+	(vec_eltype(__x)(*)[vec_length(__x)])((__x)->data);		\
 }))
 #else
 // work around a compiler bug
