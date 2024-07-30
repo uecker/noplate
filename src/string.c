@@ -44,7 +44,7 @@ string* string_dup(const string *x)
 	return string_init0(string_length(x), string_utf8(x));
 }
 
-void string_append_view(string **a, const strview b)
+void string_append_view(string * restrict *a, const strview b)
 {
 	ssize_t blen = string_length(&b);
 
@@ -69,7 +69,7 @@ void string_puts(string **a, const char *str)
 	string_append_view(a, array_view(char8_t, buf));
 }
 
-void string_append(string **a, const string *b)
+void string_append(string * restrict *a, const string *b)
 {
 	string_append_view(a, string_view((string*)b));
 }

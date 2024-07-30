@@ -72,11 +72,11 @@ extern string* string_init(const char* c);
 
 extern string *string_dup(const string *s);
 extern string *string_concat(const string *a, const string *b);
-extern void string_append(string **a, const string *b);
+extern void string_append(string * restrict *a, const string *b);
 extern string *string_printf(const char* fmt, ...);
 extern void string_puts(string **a, const char *cstr);
 
-extern void string_append_view(string **a, const strview b);
+extern void string_append_view(string * restrict *a, const strview b);
 extern string *strview_dup(const strview v);
 extern string *strview_concat(const strview a, const strview b);
 
