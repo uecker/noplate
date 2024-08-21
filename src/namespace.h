@@ -16,3 +16,9 @@ static const struct \
 #define NAMESPACE(S, ...) \
 static const struct { MAP(NAMESPACE_ENTRY, S, __VA_ARGS__) } S = { MAP(NAMESPACE_INIT, S, __VA_ARGS__) }
 
+
+#define namespace(S, ...) \
+(const struct { MAP(NAMESPACE_ENTRY, S, __VA_ARGS__) }){ MAP(NAMESPACE_INIT, S, __VA_ARGS__) }
+
+
+
