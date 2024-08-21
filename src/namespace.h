@@ -8,4 +8,5 @@ static const struct \
 { S(N, NAMESPACE_ENTRY) } N = { S(N, NAMESPACE_INIT) }
 #define NAMESPACE_IMPORT(X, Y) const static typeof(X) Y = X
 
+#define NAMESPACE(S) (const struct { S(S, NAMESPACE_ENTRY) }){ S(S, NAMESPACE_INIT) }
 
