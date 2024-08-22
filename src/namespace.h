@@ -16,9 +16,9 @@ static const struct \
 #define NAMESPACE(S, ...) \
 static const struct { MAP(NAMESPACE_ENTRY, S, __VA_ARGS__) } S = { MAP(NAMESPACE_INIT, S, __VA_ARGS__) }
 
-
+// const does not work with GCC here, PR116456
 #define namespace(S, ...) \
-(const struct { MAP(NAMESPACE_ENTRY, S, __VA_ARGS__) }){ MAP(NAMESPACE_INIT, S, __VA_ARGS__) }
+(struct { MAP(NAMESPACE_ENTRY, S, __VA_ARGS__) }){ MAP(NAMESPACE_INIT, S, __VA_ARGS__) }
 
 
 
