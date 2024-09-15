@@ -21,7 +21,7 @@ inline nat nat_alloc(void)
 
 inline int net_length(const nat x)
 {
-	return vec_length(x);
+	return vec_length(nat_base_t, x);
 }
 
 extern nat nat_init(int x);

@@ -88,7 +88,7 @@ int main()
 	vec_append(int, &v, vec_view(int, w));
 	vec_access(int, v, 1)++;
 
-	for (int i = 0; i < (int)vec_length(v); i++)
+	for (int i = 0; i < (int)vec_length(int, v); i++)
 		printf("%d\n", vec_access(int, v, i));
 
 
@@ -138,20 +138,20 @@ int main()
 
 	string* ss = NULL_CHECK(string_alloc());
     
-	for (int i = 0; i < (int)vec_length(s); i++)
-		string_append(&ss, vec_access(string_ptr, s, vec_length(s) - 1 - i));
+	for (int i = 0; i < (int)vec_length(int, s); i++)
+		string_append(&ss, vec_access(string_ptr, s, vec_length(int, s) - 1 - i));
 
 	const string* s2 = ss;
 	const char* x = string_cstr(s2);
 
 	printf("%s %d\n", x, vec_access(int, v, 0));
 
-	assert(vec_length(s) == array_lengthof(vec_array(string_ptr, s)));
+	assert(vec_length(string_ptr, s) == array_lengthof(vec_array(string_ptr, s)));
 
 	free(v);
 	xfree(ss);
 
-	while (0 < vec_length(s))
+	while (0 < vec_length(string_ptr, s))
 		free(vec_pop(string_ptr, &s));
 
 	free(s);
@@ -172,7 +172,7 @@ int main()
 
 	printf("%s\n", string_cstr(&v3));
 
-	assert(vec_length(&v3) == string_length(s3) + 1);
+	assert(vec_length(char8_t, &v3) == string_length(s3) + 1);
 
 	free(s3);
 

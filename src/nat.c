@@ -34,7 +34,7 @@ err:
 
 nat nat_dup(const nat x)
 {
-	nat n = vec_alloc_n(nat_base_t, vec_length(x));
+	nat n = vec_alloc_n(nat_base_t, vec_length(nat_base_t, x));
 
 	if (NULL == n)
 		goto err;
@@ -49,8 +49,8 @@ err:
 
 extern nat nat_mul(const nat a, const nat b)
 {
-	int A = vec_length(a);
-	int B = vec_length(b);
+	int A = vec_length(nat_base_t, a);
+	int B = vec_length(nat_base_t, b);
 
 	nat p = vec_calloc_n(nat_base_t, A + B);
 
@@ -85,15 +85,15 @@ err:
 
 extern nat nat_add(const nat a, const nat b)
 {
-	int A = vec_length(a);
-	int B = vec_length(b);
+	int A = vec_length(nat_base_t, a);
+	int B = vec_length(nat_base_t, b);
 
 	nat p = vec_alloc_n(nat_base_t, ((A > B) ? A : B) + 1);
 
 	if (NULL == p)
 		goto err;
 
-	int C = vec_length(p);
+	int C = vec_length(nat_base_t, p);
 
 	nat_base_t carry = 0;
 
@@ -128,7 +128,7 @@ extern nat nat_sub(const nat a, const nat b);
 
 string* nat_2string(const nat x)
 {
-	int X = vec_length(x);
+	int X = vec_length(nat_base_t, x);
 //	int N = (X * bitsof(nat_base_t) + 2) / 3;
 
 	char tmp[X * bitsof(nat_base_t) + 1];

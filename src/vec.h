@@ -17,8 +17,9 @@
 #define vec_decl(T) vec(T) { ssize_t N; [[COUNTED_BY(N)]] T data[]; }
 #endif
 
-#define vec_eltype(T) typeof((T)->data[0])
-#define vec_length(T) ((size_t)((T)->N))
+#define vec_eltype(T, x) typeof((x)->data[0])
+#define vec_length(T, x) ((size_t)((x)->N))
+//#define vec_length(T, x) ((size_t)(TYPE_CHECK(typeof(vec(T)*), x)->N))
 
 
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
@@ -28,7 +29,7 @@
 #define vec_realloc(T, x, M)						\
 ({									\
 	vec(T) **__Ta = (x);						\
-	(void)TYPE_CHECK(typeof(typeof(vec_eltype(*__Ta)[])*), 		\
+	(void)TYPE_CHECK(typeof(typeof(vec_eltype(T, *__Ta)[])*), 	\
 			&(*__Ta)->data);				\
 	(*__Ta)->N = (M);						\
 	*__Ta = realloc(*__Ta, vec_sizeof(T, *__Ta));			\
@@ -58,8 +59,8 @@
 #define vec_array(T, x) \
 (*({									\
 	auto __x = (x);							\
-	_Static_assert(same_type_unq_p(T, vec_eltype(__x)), "");	\
-	(vec_eltype(__x)(*)[vec_length(__x)])((__x)->data);		\
+	_Static_assert(same_type_unq_p(T, vec_eltype(T, __x)), "");	\
+	(vec_eltype(T, __x)(*)[vec_length(T, __x)])((x)->data);	\
 }))
 #else
 // work around a compiler bug
@@ -68,24 +69,24 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 #define vec_array(T, x)							\
 (*(({									\
 	auto __x = (x);							\
-	_Static_assert(same_type_unq_p(T, (vec_eltype(__x)), "");	\
+	_Static_assert(same_type_unq_p(T, (vec_eltype(T, __x)), "");	\
 	vec_array_tmp.N = __x->N;					\
 	vec_array_tmp.data = __x->data;					\
-}), (vec_eltype(x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
+}), (vec_eltype(T, x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
 #endif
 
 #define vec_access(T, x4, i)						\
 (*({									\
  	auto __x4 = (x4);						\
 	ssize_t __i = (i);						\
-	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(__x4)));		\
+	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(T, __x4)));	\
 	&(vec_array(T, __x4)[__i]);					\
 }))
 
 #define vec_push(T, v2, x2) 						\
 ({ 									\
 	vec(T) **__T3 = (v2);						\
-	ssize_t __N = vec_length(*__T3);				\
+	ssize_t __N = vec_length(T, *__T3);				\
 	NULL_CHECK(vec_realloc(T, __T3, __N + 1));			\
 	vec_access(T, *__T3, __N) = (x2);				\
 })
@@ -93,7 +94,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 #define vec_pop(T, v2) 							\
 ({ 									\
 	vec(T) **__T2 = (v2);						\
-	ssize_t __N = vec_length(*__T2);				\
+	ssize_t __N = vec_length(T, *__T2);				\
 	CHECK(0 < __N);							\
 	auto __r = vec_access(T, *__T2, __N - 1);			\
 	NULL_CHECK(vec_realloc(T, __T2, __N - 1));			\
@@ -112,7 +113,7 @@ extern void noplate_qsort(void* ptr, size_t N, size_t si, noplate_qsort_cmp_func
 #define vec_sort(T, v2, cmp)						\
 ({									\
  	auto __T1 = (v2);						\
-	typedef vec_eltype(__T1) __ET;					\
+	typedef vec_eltype(T, __T1) __ET;				\
 	_Static_assert(same_type_unq_p(T, __ET), "");			\
 	struct { int CLOSURE_TYPE(xcmp)(const __ET*, const __ET*); }	\
 		__d = { (cmp) };					\

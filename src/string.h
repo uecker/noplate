@@ -50,7 +50,7 @@ typedef view(char8_t) strview;
 #define string_utf8(x)		(vec_array(char8_t, string_check(STRING_UNWRAP(x))))
 #define string_cstr(x)		(array_cast(char, string_utf8(x)))
 #define string_view(x) 		(vec_view(char8_t, STRING_UNWRAP(x)))
-#define string_length(x)	(vec_length(STRING_UNWRAP(x)) - 1)
+#define string_length(x)	(vec_length(char8_t, STRING_UNWRAP(x)) - 1)
 
 
 inline string *string_alloc(void)

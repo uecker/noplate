@@ -16,6 +16,7 @@
 #define view_decl(T) view(T) { ssize_t N; T* data; }
 #endif
 
+
 #define array_view(T, x)					\
 ({	auto __y = &(x);					\
 	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
@@ -27,8 +28,8 @@
 ({									\
 	vec(T) **__v = (a);						\
 	view(T) __w = (b);						\
-	ssize_t alen = vec_length(*__v);				\
-	ssize_t blen = vec_length(&__w);				\
+	ssize_t alen = vec_length(T, *__v);				\
+	ssize_t blen = vec_length(T, &__w);				\
 	vec_realloc(T, __v, alen + blen);				\
 	if (NULL != *__v) {						\
 		memcpy(&vec_access(T, *__v, alen), 			\
