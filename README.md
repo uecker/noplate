@@ -101,11 +101,11 @@ Example 4 (strview)
 Example 5 (maybe)
 -----------------
 
-https://godbolt.org/z/Evsfhv3no
+https://godbolt.org/z/azdaT9P1b
 
     maybe(int) divide(int a, int b)
     {
-        return b ? maybe_ok(int, a / b) : maybe_fail(int);
+        return (b != 0 && b != -1) ? maybe_ok(int, a / b) : maybe_fail(int);
     }
 
 
