@@ -42,7 +42,7 @@ a pointer.
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/EzejPPM35
+https://godbolt.org/z/7xPY6Wx1T
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -60,7 +60,7 @@ https://godbolt.org/z/EzejPPM35
 Example 2 (view)
 ----------------
 
-https://godbolt.org/z/eE597x4sM
+https://godbolt.org/z/Woje9s6PY
 
     void sum(view(int) v)
     {
@@ -132,10 +132,9 @@ https://godbolt.org/z/zqGPvGb1a
 Example 7 (vector of strings)
 -----------------------------
 
-https://godbolt.org/z/qfGxvev38
+https://godbolt.org/z/Pbfb81v7z
 
 	typedef string* strptr;
-	vec_decl(strptr)
 	vec(strptr)* s = vec_alloc(strptr);
 
 	vec_push(strptr, &s, string_init(" Du!"));
