@@ -24,7 +24,8 @@
 
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
 
-#define vec_sizeof(T, x) (sizeof(vec(T)) + (x)->N * sizeof(T))
+#define _vec_sizeof(T, N) ((ssize_t)sizeof(vec(T)) + (N) * (ssize_t)sizeof(T))
+#define vec_sizeof(T, x) _vec_sizeof(T, (x)->N)
 
 #define vec_realloc(T, x, M)						\
 ({									\
@@ -39,7 +40,7 @@
 #define vec_calloc_n(T, M) \
 ({									\
 	ssize_t __Na = (M);						\
-	vec(T)* __t = calloc(1, sizeof(vec(T)) + __Na * sizeof(T));	\
+	vec(T)* __t = calloc(1, _vec_sizeof(T, __Na));			\
 	if (__t) __t->N = __Na;						\
 	__t;								\
 })
@@ -47,7 +48,7 @@
 #define vec_alloc_n(T, M) \
 ({									\
 	ssize_t __Na = (M);						\
- 	vec(T)* __t = malloc(sizeof(vec(T)) + __Na * sizeof(T));	\
+	vec(T)* __t = malloc(_vec_sizeof(T, __Na));			\
 	if (__t) __t->N = __Na;						\
 	__t;								\
 })
