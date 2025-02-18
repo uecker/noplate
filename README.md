@@ -21,7 +21,8 @@ with null-termination.
 
 All container types preserve information about the type of
 the elements and also have bounds checking, i.e. out-of-bounds
-accesses trap at run-time (with UBSan).
+accesses trap at run-time (with UBSan).  (NOTE: EXPERIMENTAL,
+this is certainly not safe at this point!)
 
 
 Interoperability works by providing access to the underlying
