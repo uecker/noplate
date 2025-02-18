@@ -187,12 +187,12 @@ int main()
 	maybe(int) m = maybe_fail(int);
 
 	if (m.ok)
-		printf("not ok: %d\n", maybe_use(m));
+		printf("not ok: %d\n", maybe_just(int, m));
 
 	m = maybe_ok(int, 3);
 
 	if (m.ok)
-		printf("ok: %d\n", maybe_use(m));
+		printf("ok: %d\n", maybe_just(int, m));
 
 	auto ifl = product_init(int, float, (3, 0.1));
 	auto si = sum_init(product_name(int, float), string_ptr, ifl);
