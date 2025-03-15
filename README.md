@@ -102,11 +102,11 @@ Example 4 (strview)
 Example 5 (maybe)
 -----------------
 
-https://godbolt.org/z/4PGEYvaYj
+https://godbolt.org/z/nj53ez5oe
 
     maybe(int) divide(int a, int b)
     {
-        return (b != 0 && b != -1) ? maybe_ok(int, a / b) : maybe_fail(int);
+        return (b != 0) ? maybe_ok(int, a / b) : maybe_fail(int);
     }
 
 
@@ -158,7 +158,7 @@ https://godbolt.org/z/Pbfb81v7z
 Example 8 (array slice)
 -----------------------
 
-https://godbolt.org/z/noKGz6nWj
+https://godbolt.org/z/YqnKTT6ds
 
     char str[] = "Hallo";
 	auto slice = &array_slice(str, 1, 1 + 3);
