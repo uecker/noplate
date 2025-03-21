@@ -102,7 +102,7 @@ Example 4 (strview)
 Example 5 (maybe)
 -----------------
 
-https://godbolt.org/z/nj53ez5oe
+https://godbolt.org/z/1cM91cra6
 
     maybe(int) divide(int a, int b)
     {
