@@ -43,7 +43,7 @@ a pointer.
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/7xPY6Wx1T
+https://godbolt.org/z/E75GW6Wb5
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -61,7 +61,7 @@ https://godbolt.org/z/7xPY6Wx1T
 Example 2 (view)
 ----------------
 
-https://godbolt.org/z/Woje9s6PY
+https://godbolt.org/z/W7e6jj4bK
 
     void sum(view(int) v)
     {
@@ -79,7 +79,7 @@ https://godbolt.org/z/Woje9s6PY
 Example 3 (strings)
 -------------------
 
-https://godbolt.org/z/KE4o17fnW
+https://godbolt.org/z/c1zxrM8PG
 
     string *a = string_init("abc");
     string *b = string_printf("%d", 3);
@@ -113,7 +113,7 @@ https://godbolt.org/z/1cM91cra6
 Example 6 (product and sum)
 ------------------------------
 
-https://godbolt.org/z/zqGPvGb1a
+https://godbolt.org/z/oYEEz1MGj
 
     typedef product(int, float) product_name(int, float);
     typedef product(int, int) product_name(int, int);
@@ -133,7 +133,7 @@ https://godbolt.org/z/zqGPvGb1a
 Example 7 (vector of strings)
 -----------------------------
 
-https://godbolt.org/z/Pbfb81v7z
+https://godbolt.org/z/Wf5rd3nn3
 
 	typedef string* strptr;
 	vec(strptr)* s = vec_alloc(strptr);
