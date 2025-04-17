@@ -94,7 +94,7 @@ int main()
 
 
 	float bb[4];
-	span(float) vf = array_span(float, bb);
+	span(float) vf = array2span(float, bb);
 
 	span_access(float, &vf, 1) = 1.;
 
@@ -102,10 +102,10 @@ int main()
 
 	span_access(int, &vi, 1)++;
 
-	int (*t)[3] = &span_array(int, &vi);
+	int (*t)[3] = &span2array(int, &vi);
 
-	assert(5 == span_array(int, &vi)[1]);
-	assert((*t)[2] == span_array(int, &vi)[2]);
+	assert(5 == span2array(int, &vi)[1]);
+	assert((*t)[2] == span2array(int, &vi)[2]);
 
 #if 0
 	// these should all fail

@@ -28,7 +28,7 @@
 }))
 
 
-#define array_span(T, x)					\
+#define array2span(T, x)					\
 ({	auto __y = &(x);					\
 	(span(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 })
