@@ -96,16 +96,16 @@ int main()
 	float bb[4];
 	view(float) vf = array_view(float, bb);
 
-	vec_access(float, &vf, 1) = 1.;
+	view_access(float, &vf, 1) = 1.;
 
 	view(int) vi = vec_view(int, v);
 
-	vec_access(int, &vi, 1)++;
+	view_access(int, &vi, 1)++;
 
-	int (*t)[3] = &vec_array(int, &vi);
+	int (*t)[3] = &view_array(int, &vi);
 
-	assert(5 == vec_array(int, &vi)[1]);
-	assert((*t)[2] == vec_array(int, &vi)[2]);
+	assert(5 == view_array(int, &vi)[1]);
+	assert((*t)[2] == view_array(int, &vi)[2]);
 
 #if 0
 	// these should all fail

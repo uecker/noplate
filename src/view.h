@@ -24,6 +24,10 @@
 
 #define vec_view(T, x)	array_view(T, vec_array(T, x))
 
+#define view_length(T, x) vec_length(T, TYPE_CHECK(view(T)*, x))
+#define view_array(T, x) vec_array(T, TYPE_CHECK(view(T)*, x))
+#define view_access(T, x, i) vec_access(T, TYPE_CHECK(view(T)*, x), i)
+
 #define vec_append(T, a, b) 						\
 ({									\
 	vec(T) **__v = (a);						\
