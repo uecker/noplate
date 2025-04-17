@@ -39,8 +39,8 @@ nat nat_dup(const nat x)
 	if (NULL == n)
 		goto err;
 
-	memcpy(	vec_array(nat_base_t, n),
-		vec_array(nat_base_t, x),
+	memcpy(	vec2array(nat_base_t, n),
+		vec2array(nat_base_t, x),
 		vec_sizeof(nat_base_t, x));
 
 err:
