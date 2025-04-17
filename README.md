@@ -43,7 +43,7 @@ a pointer.
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/E75GW6Wb5
+https://godbolt.org/z/Gbn6xe8Tb
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -61,13 +61,13 @@ https://godbolt.org/z/E75GW6Wb5
 Example 2 (span)
 ----------------
 
-https://godbolt.org/z/Yqddvnvs9
+https://godbolt.org/z/v1r5EWv8b
 
     void sum(span(int) v)
     {
         int sum = 0;
         for (int i  = 0; i < span_length(&v); i++)
-            sum += span2array(int, &v)[i];
+            sum += span_access(int, &v, i);
         return sum;
     }
 
@@ -79,7 +79,7 @@ https://godbolt.org/z/Yqddvnvs9
 Example 3 (strings)
 -------------------
 
-https://godbolt.org/z/c1zxrM8PG
+https://godbolt.org/z/MMKEdG3or
 
     string *a = string_init("abc");
     string *b = string_printf("%d", 3);
@@ -133,7 +133,7 @@ https://godbolt.org/z/oYEEz1MGj
 Example 7 (vector of strings)
 -----------------------------
 
-https://godbolt.org/z/Wf5rd3nn3
+https://godbolt.org/z/hhT98vM7Y
 
 	typedef string* strptr;
 	vec(strptr)* s = vec_alloc(strptr);
@@ -167,8 +167,13 @@ https://godbolt.org/z/YqnKTT6ds
 	(*slice)[2] = 'L';
 
 
+Example 9 (span + slice)
+------------------------
 
-Example 9 (byte-level loads and stores)
+https://godbolt.org/z/TcYrG8sWs
+
+
+Example 10 (byte-level loads and stores)
 ---------------------------------------
 
 https://godbolt.org/z/xeYfn17zG
