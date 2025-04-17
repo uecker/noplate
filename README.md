@@ -58,22 +58,22 @@ https://godbolt.org/z/E75GW6Wb5
 	free(v);
 
 
-Example 2 (view)
+Example 2 (span)
 ----------------
 
-https://godbolt.org/z/W7e6jj4bK
+https://godbolt.org/z/sdndTfcYf
 
-    void sum(view(int) v)
+    void sum(span(int) v)
     {
         int sum = 0;
-        for (int i  = 0; i < vec_length(&v); i++)
-            sum += vec_array(int, &v)[i];
+        for (int i  = 0; i < span_length(&v); i++)
+            sum += span2array(int, &v)[i];
         return sum;
     }
 
 	vec(int)* v = vec_alloc(int);
 
-	int s = sum(vec_view(int, v));
+	int s = sum(vec_span(int, v));
 
 
 Example 3 (strings)
