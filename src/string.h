@@ -28,7 +28,7 @@ typedef span(char8_t) strview;
 #define string_check(x)	\
 ({ 									\
 	auto __s = (x);							\
-	CHECK('\0' == vec_array(char8_t, __s)[string_length(__s)]); __s; \
+	CHECK('\0' == vec2array(char8_t, __s)[string_length(__s)]); __s; \
 })
 
 #ifdef STRING_OPAQUE
@@ -47,9 +47,9 @@ typedef span(char8_t) strview;
 #define STRING_UNWRAP(x) (x)
 #endif
 
-#define string_utf8(x)		(vec_array(char8_t, string_check(STRING_UNWRAP(x))))
+#define string_utf8(x)		(vec2array(char8_t, string_check(STRING_UNWRAP(x))))
 #define string_cstr(x)		(array_cast(char, string_utf8(x)))
-#define string_view(x) 		(vec_span(char8_t, STRING_UNWRAP(x)))
+#define string_view(x) 		(vec2span(char8_t, STRING_UNWRAP(x)))
 #define string_length(x)	(vec_length(char8_t, STRING_UNWRAP(x)) - 1)
 
 

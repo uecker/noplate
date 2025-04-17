@@ -25,7 +25,7 @@ static string* string_init0(int len, const char8_t c[static len])
 	if (NULL == s)
 		goto err;
 
-	memcpy(vec_array(char8_t, s), c, len);
+	memcpy(vec2array(char8_t, s), c, len);
 	vec_access(char8_t, s, len) = '\0';
 
 err:
@@ -66,7 +66,7 @@ void string_append_view(string * restrict *a, const strview b)
 
 #ifdef UTF8_NORMALIZE
 	utf8proc_uint8_t *retval;
-	utf8proc_map(vec_array(char8_t, x), 0, &retval, UTF8PROC_NULLTERM | UTF8PROC_STABLE | UTF8PROC_COMPOSE);
+	utf8proc_map(vec2array(char8_t, x), 0, &retval, UTF8PROC_NULLTERM | UTF8PROC_STABLE | UTF8PROC_COMPOSE);
 	*a = string_init0(strlen((char*)retval), retval);
 	free(retval);
 	free(x);
@@ -80,7 +80,7 @@ void string_puts(string **a, const char *str)
 {
 	char8_t buf[strlen(str) + 1];
 	memcpy(buf, str, sizeof buf);
-	string_append_view(a, array_span(char8_t, buf));
+	string_append_view(a, array2span(char8_t, buf));
 }
 
 void string_append(string * restrict *a, const string *b)

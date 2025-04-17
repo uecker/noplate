@@ -85,7 +85,7 @@ int main()
 	vec_push(int, &w, 3);
 	vec_push(int, &w, 8);
 
-	vec_append(int, &v, vec_span(int, w));
+	vec_append(int, &v, vec2span(int, w));
 	vec_access(int, v, 1)++;
 
 	for (int i = 0; i < (int)vec_length(int, v); i++)
@@ -98,7 +98,7 @@ int main()
 
 	span_access(float, &vf, 1) = 1.;
 
-	span(int) vi = vec_span(int, v);
+	span(int) vi = vec2span(int, v);
 
 	span_access(int, &vi, 1)++;
 
@@ -146,7 +146,7 @@ int main()
 
 	printf("%s %d\n", x, vec_access(int, v, 0));
 
-	assert(vec_length(string_ptr, s) == array_lengthof(vec_array(string_ptr, s)));
+	assert(vec_length(string_ptr, s) == array_lengthof(vec2array(string_ptr, s)));
 
 	free(v);
 	xfree(ss);

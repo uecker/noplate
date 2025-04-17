@@ -17,15 +17,10 @@
 #endif
 
 
-#define array_span(T, x)					\
-({	auto __y = &(x);					\
-	(span(T)){ array_lengthof(*__y), &(*__y)[0] };		\
-})
-
-#define vec_span(T, x)	array_span(T, vec_array(T, x))
+#define vec2span(T, x)	array2span(T, vec2array(T, x))
 
 #define span_length(T, x) vec_length(T, TYPE_CHECK(span(T)*, x))
-#define span2array(T, x) vec_array(T, TYPE_CHECK(span(T)*, x))
+#define span2array(T, x) vec2array(T, TYPE_CHECK(span(T)*, x))
 #define span_access(T, x, i) vec_access(T, TYPE_CHECK(span(T)*, x), i)
 
 #define vec_append(T, a, b) 						\

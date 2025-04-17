@@ -57,7 +57,7 @@
 
 
 #if (GCC_VERSION >= 110300) || defined __clang__
-#define vec_array(T, x) \
+#define vec2array(T, x) \
 (*({									\
 	auto __x = (x);							\
 	_Static_assert(same_type_unq_p(T, vec_eltype(T, __x)), "");	\
@@ -67,7 +67,7 @@
 // work around a compiler bug
 // GCC: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91038
 extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
-#define vec_array(T, x)							\
+#define vec2array(T, x)							\
 (*(({									\
 	auto __x = (x);							\
 	_Static_assert(same_type_unq_p(T, (vec_eltype(T, __x)), "");	\
@@ -81,7 +81,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
  	auto __x4 = (x4);						\
 	ssize_t __i = (i);						\
 	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(T, __x4)));	\
-	&(vec_array(T, __x4)[__i]);					\
+	&(vec2array(T, __x4)[__i]);					\
 }))
 
 #define vec_push(T, v2, x2) 						\

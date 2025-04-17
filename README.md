@@ -27,7 +27,7 @@ this is certainly not safe at this point!)
 
 Interoperability works by providing access to the underlying
 elements. For example, vec_access provides access to an
-lvalue for the underlying element of a vector and vec_array
+lvalue for the underlying element of a vector and vec2array
 provides access to an array representing the complete vector.
 This array is a VLA, so accesses are also checked when using
 UBSan. A string type is defined as vector of char with
@@ -61,7 +61,7 @@ https://godbolt.org/z/E75GW6Wb5
 Example 2 (span)
 ----------------
 
-https://godbolt.org/z/sdndTfcYf
+https://godbolt.org/z/Yqddvnvs9
 
     void sum(span(int) v)
     {
@@ -73,7 +73,7 @@ https://godbolt.org/z/sdndTfcYf
 
 	vec(int)* v = vec_alloc(int);
 
-	int s = sum(vec_span(int, v));
+	int s = sum(vec2span(int, v));
 
 
 Example 3 (strings)
