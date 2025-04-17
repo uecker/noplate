@@ -7,12 +7,12 @@
 #define __STRING_H
 
 #include "vec.h"
-#include "view.h"
+#include "span.h"
 
 typedef unsigned char char8_t;
 vec_decl(char8_t);
-view_decl(char8_t);
-view_decl(char);
+span_decl(char8_t);
+span_decl(char);
 
 // #define STRING_OPAQUE
 #ifdef STRING_OPAQUE
@@ -23,7 +23,7 @@ typedef struct string string;
 typedef vec(char8_t) string;
 typedef string string_priv;
 #endif
-typedef view(char8_t) strview;
+typedef span(char8_t) strview;
 
 #define string_check(x)	\
 ({ 									\
@@ -49,7 +49,7 @@ typedef view(char8_t) strview;
 
 #define string_utf8(x)		(vec_array(char8_t, string_check(STRING_UNWRAP(x))))
 #define string_cstr(x)		(array_cast(char, string_utf8(x)))
-#define string_view(x) 		(vec_view(char8_t, STRING_UNWRAP(x)))
+#define string_view(x) 		(vec_span(char8_t, STRING_UNWRAP(x)))
 #define string_length(x)	(vec_length(char8_t, STRING_UNWRAP(x)) - 1)
 
 

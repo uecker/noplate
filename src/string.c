@@ -11,6 +11,10 @@
 #include "array.h"
 #include "string.h"
 
+#ifdef UTF8_NORMALIZE
+#include "utf8proc.h"
+#endif
+
 
 extern inline string* string_alloc(void);
 
@@ -59,6 +63,16 @@ void string_append_view(string * restrict *a, const strview b)
 
 	memcpy(&vec_access(char8_t, x, alen), string_cstr(&b), blen);
 	vec_access(char8_t, x, alen + blen) = '\0';
+
+#ifdef UTF8_NORMALIZE
+	utf8proc_uint8_t *retval;
+	utf8proc_map(vec_array(char8_t, x), 0, &retval, UTF8PROC_NULLTERM | UTF8PROC_STABLE | UTF8PROC_COMPOSE);
+	*a = string_init0(strlen((char*)retval), retval);
+	free(retval);
+	free(x);
+#else
+	*a = (string*)x;
+#endif
 err:
 }
 
@@ -66,7 +80,7 @@ void string_puts(string **a, const char *str)
 {
 	char8_t buf[strlen(str) + 1];
 	memcpy(buf, str, sizeof buf);
-	string_append_view(a, array_view(char8_t, buf));
+	string_append_view(a, array_span(char8_t, buf));
 }
 
 void string_append(string * restrict *a, const string *b)
@@ -131,7 +145,6 @@ string* string_printf(const char* fmt, ...)
 		s = NULL;
 		goto err;
 	}
-
 err:
 	return (string*)s;
 }

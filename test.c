@@ -10,7 +10,7 @@
 
 #include "string.h"
 #include "vec.h"
-#include "view.h"
+#include "span.h"
 #include "list.h"
 #include "nat.h"
 #include "array.h"
@@ -24,8 +24,8 @@ typedef string* string_ptr;
 #ifndef TAGCOMPAT
 vec_decl(int);
 vec_decl(string_ptr);
-view_decl(int);
-view_decl(float);
+span_decl(int);
+span_decl(float);
 list_decl(int);
 list_decl(string_ptr);
 maybe_decl(int);
@@ -85,7 +85,7 @@ int main()
 	vec_push(int, &w, 3);
 	vec_push(int, &w, 8);
 
-	vec_append(int, &v, vec_view(int, w));
+	vec_append(int, &v, vec_span(int, w));
 	vec_access(int, v, 1)++;
 
 	for (int i = 0; i < (int)vec_length(int, v); i++)
@@ -94,25 +94,25 @@ int main()
 
 
 	float bb[4];
-	view(float) vf = array_view(float, bb);
+	span(float) vf = array_span(float, bb);
 
-	view_access(float, &vf, 1) = 1.;
+	span_access(float, &vf, 1) = 1.;
 
-	view(int) vi = vec_view(int, v);
+	span(int) vi = vec_span(int, v);
 
-	view_access(int, &vi, 1)++;
+	span_access(int, &vi, 1)++;
 
-	int (*t)[3] = &view_array(int, &vi);
+	int (*t)[3] = &span_array(int, &vi);
 
-	assert(5 == view_array(int, &vi)[1]);
-	assert((*t)[2] == view_array(int, &vi)[2]);
+	assert(5 == span_array(int, &vi)[1]);
+	assert((*t)[2] == span_array(int, &vi)[2]);
 
 #if 0
 	// these should all fail
 	vec_push(vi, 3);
 	vec_push(&vi, 3);
-	vec_push((view(int)*){ &vi }, 3);
-	vec_push(&(view(int)*){ &vi }, 3);
+	vec_push((span(int)*){ &vi }, 3);
+	vec_push(&(span(int)*){ &vi }, 3);
 #endif
 
 

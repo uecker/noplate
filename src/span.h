@@ -3,35 +3,35 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef __VIEW_H
-#define __VIEW_H 1
+#ifndef __SPAN_H
+#define __SPAN_H 1
 
 #include "core.h"
 
 #ifdef TAGCOMPAT
-#define view(T) struct CONCAT(view_, T) { ssize_t N; T* data; }
-#define view_decl(T)
+#define span(T) struct CONCAT(span_, T) { ssize_t N; T* data; }
+#define span_decl(T)
 #else
-#define view(T) struct CONCAT(view_, T)
-#define view_decl(T) view(T) { ssize_t N; T* data; }
+#define span(T) struct CONCAT(span_, T)
+#define span_decl(T) span(T) { ssize_t N; T* data; }
 #endif
 
 
-#define array_view(T, x)					\
+#define array_span(T, x)					\
 ({	auto __y = &(x);					\
-	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
+	(span(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 })
 
-#define vec_view(T, x)	array_view(T, vec_array(T, x))
+#define vec_span(T, x)	array_span(T, vec_array(T, x))
 
-#define view_length(T, x) vec_length(T, TYPE_CHECK(view(T)*, x))
-#define view_array(T, x) vec_array(T, TYPE_CHECK(view(T)*, x))
-#define view_access(T, x, i) vec_access(T, TYPE_CHECK(view(T)*, x), i)
+#define span_length(T, x) vec_length(T, TYPE_CHECK(span(T)*, x))
+#define span_array(T, x) vec_array(T, TYPE_CHECK(span(T)*, x))
+#define span_access(T, x, i) vec_access(T, TYPE_CHECK(span(T)*, x), i)
 
 #define vec_append(T, a, b) 						\
 ({									\
 	vec(T) **__v = (a);						\
-	view(T) __w = (b);						\
+	span(T) __w = (b);						\
 	ssize_t alen = vec_length(T, *__v);				\
 	ssize_t blen = vec_length(T, &__w);				\
 	vec_realloc(T, __v, alen + blen);				\

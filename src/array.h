@@ -28,9 +28,9 @@
 }))
 
 
-#define array_view(T, x)					\
+#define array_span(T, x)					\
 ({	auto __y = &(x);					\
-	(view(T)){ array_lengthof(*__y), &(*__y)[0] };		\
+	(span(T)){ array_lengthof(*__y), &(*__y)[0] };		\
 })
 
 #define array_cast(S, x)  					\
