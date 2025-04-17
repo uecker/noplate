@@ -86,6 +86,9 @@ int main()
 	vec_push(int, &w, 8);
 
 	vec_append(int, &v, vec2span(int, w));
+
+	free(w);
+
 	vec_access(int, v, 1)++;
 
 	for (int i = 0; i < (int)vec_length(int, v); i++)
@@ -211,7 +214,11 @@ int main()
 	nat d = nat_mul(c, b);
 	nat e = nat_add(d, a);
 
-	printf("%s\n", string_cstr(nat_2string(e)));
+	string *ns = nat_2string(e);
+
+	printf("%s\n", string_cstr(ns));
+
+	free(ns);
 
 	free(a);
 	free(b);
