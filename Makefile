@@ -28,9 +28,30 @@ SRCS = $(wildcard src/*.c)
 
 lib/libnoplate.a: lib/libnoplate.a($(SRCS:.c=.o))
 
-test: test.c lib/libnoplate.a
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+test: tests/list tests/maybe tests/span tests/string tests/vec
 	# execstack -c test
+
+tests/list: tests/list.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+	tests/list
+
+tests/maybe: tests/maybe.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+	tests/maybe
+
+tests/span: tests/span.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+	tests/span
+
+tests/string: tests/string.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+	tests/string
+
+tests/vec: tests/vec.c lib/libnoplate.a
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+	tests/vec
+
+
 
 test_mdarray: test_mdarray.c lib/libnoplate.a
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -Wno-missing-braces -o $@ $^
