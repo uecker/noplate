@@ -44,7 +44,7 @@
 
 
 
-#define TYPE_CHECK(T, x)	(1 ? (x) : (T){0})
+#define TYPE_CHECK(T, x)	_Generic((x), T: (x))
 #define containerof(x, T, member)	\
 	((T*)((char*)TYPE_CHECK(typeof(&((T*)0)->member), x) - offsetof(T, member)))
 
