@@ -179,6 +179,12 @@ int main()
 
 	free(s3);
 
+
+	int ar[5];
+	int *ap = ar;
+	int (*arp)[5] = &ptr2array(5, ap);
+	(void)arp;
+
 	char buf[100];
 
 	poke(int, &array_slice(buf, 11, 11 + sizeof(int)), 3);

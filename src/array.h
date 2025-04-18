@@ -1,4 +1,4 @@
-/* Copyright 2022. Martin Uecker
+/* Copyright 2022-2025. Martin Uecker
  * All rights reserved. Use of this source code is governed by
  * a BSD-style license which can be found in the LICENSE file.
  * */
@@ -40,6 +40,18 @@
 	CHECK(sizeof(__S) == sizeof((*__y)[0]));		\
 	(__S(*)[array_lengthof(*__y)])__y;			\
 })
+
+#define ptr2array(N, p)						\
+*({								\
+	auto __p = (p);						\
+	auto __N = (N);						\
+	size_t s = __builtin_dynamic_object_size(__p, 0);	\
+	typedef typeof(*__p) eltype;				\
+	CHECK(s != (size_t)-1);					\
+	CHECK(sizeof(eltype[__N]) <= s);			\
+	(eltype (*)[__N])__p;					\
+})
+
 
 // note, this can not fail for non-arrays
 #define _array_element(x)									\
