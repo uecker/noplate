@@ -3,8 +3,8 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef __VEC_H
-#define __VEC_H 1
+#ifndef _NOPLATE_VEC_H
+#define _NOPLATE_VEC_H 1
 
 #include "core.h"
 
@@ -21,47 +21,106 @@
 #define vec_length(T, x) ((size_t)((x)->N))
 //#define vec_length(T, x) ((size_t)(TYPE_CHECK(typeof(vec(T)*), x)->N))
 
-
 #define NULL_CHECK(x) ({ auto __x = (x); if (!__x) abort(); __x; })
 
 #define _vec_sizeof(T, N) ((ssize_t)sizeof(vec(T)) + (N) * (ssize_t)sizeof(T))
 #define vec_sizeof(T, x) _vec_sizeof(T, (x)->N)
 
-#define vec_realloc(T, x, M)						\
+
+inline ssize_t vec_capacity_auto(ssize_t x)
+{
+	ssize_t dw = x & 0xFFFF;
+	ssize_t up = x - dw;
+
+	if (!dw)
+		return x;
+#if 1
+	// round up to power of two, 16 bit
+	// fibonacci is said to work better
+	dw--;
+	for (int i = 0; i < 4; i++)
+		dw |= dw >> (1 << i);
+	dw++;
+#else
+	dw = 1u << (_INT_WIDTH_ - _builtin_clz(dw));
+#endif
+	return up + dw;
+}
+
+
+#define vec_realloc_cap(T, capacity, x, M, C)				\
 ({									\
-	vec(T) **__Ta = (x);						\
-	(void)TYPE_CHECK(typeof(typeof(vec_eltype(T, *__Ta)[])*), 	\
-			&(*__Ta)->data);				\
-	(*__Ta)->N = (M);						\
-	*__Ta = realloc(*__Ta, vec_sizeof(T, *__Ta));			\
-	*__Ta;								\
+	vec(T) **_Ta = (x);						\
+	(void)TYPE_CHECK(typeof(typeof(vec_eltype(T, *_Ta)[])*), 	\
+			&(*_Ta)->data);					\
+	ssize_t *_c = (capacity);					\
+	(*_Ta)->N = (M);						\
+	if ((*_Ta)->N > *_c) {						\
+		*_c = (C);						\
+		*_Ta = realloc(*_Ta, _vec_sizeof(T, *_c));		\
+	}								\
+	*_Ta;								\
 })
 
-#define vec_calloc_n(T, M) \
+#define vec_push_cap(T, capacity, v2, x2) 				\
+({ 									\
+	vec(T) **_T3 = (v2);						\
+	ssize_t _N = vec_length(T, *_T3);				\
+	ssize_t _C = vec_capacity_auto(_N + 1);				\
+	NULL_CHECK(vec_realloc_cap(T, capacity, _T3, _N + 1, _C));	\
+	vec_access(T, *_T3, _N) = (x2);					\
+})
+
+#define vec_push_auto(T, v2, x2) 					\
+({ 									\
+	vec(T) **_T4 = (v2);						\
+	ssize_t _N = vec_length(T, *_T4);				\
+	ssize_t _cap = vec_capacity_auto(_N);				\
+	vec_push_cap(T, &_cap, _T4, x2);				\
+})
+
+#define vec_fit(T, v2)							\
+({ 									\
+	vec(T) **_T3 = (v2);						\
+	NULL_CHECK(vec_realloc(T, _T3, vec_length(*_T3)));		\
+})
+
+
+#define vec_realloc(T, x, M)						\
 ({									\
-	ssize_t __Na = (M);						\
-	vec(T)* __t = calloc(1, _vec_sizeof(T, __Na));			\
-	if (__t) __t->N = __Na;						\
-	__t;								\
+	vec(T) **_Ta = (x);						\
+	(void)TYPE_CHECK(typeof(typeof(vec_eltype(T, *_Ta)[])*), 	\
+			&(*_Ta)->data);					\
+	(*_Ta)->N = (M);						\
+	*_Ta = realloc(*_Ta, vec_sizeof(T, *_Ta));			\
+	*_Ta;								\
+})
+
+#define vec_calloc_n(T, M) 						\
+({									\
+	ssize_t _Na = (M);						\
+	vec(T)* _t = calloc(1, _vec_sizeof(T, _Na));			\
+	if (_t) _t->N = _Na;						\
+	_t;								\
 })
 
 #define vec_alloc_n(T, M) \
 ({									\
-	ssize_t __Na = (M);						\
-	vec(T)* __t = malloc(_vec_sizeof(T, __Na));			\
-	if (__t) __t->N = __Na;						\
-	__t;								\
+	ssize_t _Na = (M);						\
+	vec(T)* _t = malloc(_vec_sizeof(T, _Na));			\
+	if (_t) _t->N = _Na;						\
+	_t;								\
 })
 
 #define vec_alloc(T) (vec_alloc_n(T, 0))
 
 
-#if (GCC_VERSION >= 110300) || defined __clang__
+#if (GCC_VERSION >= 110300) || defined _clang_
 #define vec2array(T, x) \
 (*({									\
-	auto __x = (x);							\
-	_Static_assert(same_type_unq_p(T, vec_eltype(T, __x)), "");	\
-	(vec_eltype(T, __x)(*)[vec_length(T, __x)])((x)->data);	\
+	auto _x = (x);							\
+	_Static_assert(same_type_unq_p(T, vec_eltype(T, _x)), "");	\
+	(vec_eltype(T, _x)(*)[vec_length(T, _x)])((x)->data);		\
 }))
 #else
 // work around a compiler bug
@@ -69,40 +128,65 @@
 extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp;
 #define vec2array(T, x)							\
 (*(({									\
-	auto __x = (x);							\
-	_Static_assert(same_type_unq_p(T, (vec_eltype(T, __x)), "");	\
-	vec_array_tmp.N = __x->N;					\
-	vec_array_tmp.data = __x->data;					\
+	auto _x = (x);							\
+	_Static_assert(same_type_unq_p(T, (vec_eltype(T, _x)), "");	\
+	vec_array_tmp.N = _x->N;					\
+	vec_array_tmp.data = _x->data;					\
 }), (vec_eltype(T, x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
 #endif
 
 #define vec_access(T, x4, i)						\
 (*({									\
- 	auto __x4 = (x4);						\
-	ssize_t __i = (i);						\
-	CHECK((0 <= __i) && (__i < (ssize_t)vec_length(T, __x4)));	\
-	&(vec2array(T, __x4)[__i]);					\
+	auto _x4 = (x4);						\
+	ssize_t _i = (i);						\
+	CHECK((0 <= _i) && (_i < (ssize_t)vec_length(T, _x4)));		\
+	&(vec2array(T, _x4)[_i]);					\
 }))
 
 #define vec_push(T, v2, x2) 						\
 ({ 									\
-	vec(T) **__T3 = (v2);						\
-	ssize_t __N = vec_length(T, *__T3);				\
-	NULL_CHECK(vec_realloc(T, __T3, __N + 1));			\
-	vec_access(T, *__T3, __N) = (x2);				\
+	vec(T) **_T3 = (v2);						\
+	ssize_t _N = vec_length(T, *_T3);				\
+	NULL_CHECK(vec_realloc(T, _T3, _N + 1));			\
+	vec_access(T, *_T3, _N) = (x2);					\
 })
 
 #define vec_pop(T, v2) 							\
 ({ 									\
-	vec(T) **__T2 = (v2);						\
-	ssize_t __N = vec_length(T, *__T2);				\
-	CHECK(0 < __N);							\
-	auto __r = vec_access(T, *__T2, __N - 1);			\
-	NULL_CHECK(vec_realloc(T, __T2, __N - 1));			\
- 	__r;								\
+	vec(T) **_T2 = (v2);						\
+	ssize_t _N = vec_length(T, *_T2);				\
+	CHECK(0 < _N);							\
+	auto _r = vec_access(T, *_T2, _N - 1);				\
+	NULL_CHECK(vec_realloc(T, _T2, _N - 1));			\
+	_r;								\
 })
 
-#ifndef __clang__
+#define vec_pop_cap(T, capacity, v2)					\
+({ 									\
+	vec(T) **_T2 = (v2);						\
+	ssize_t _N = vec_length(T, *_T2);				\
+	CHECK(0 < _N);							\
+	ssize_t *_c = (capacity);					\
+	ssize_t _C = vec_capacity_auto(_N - 1);				\
+	auto _r = vec_access(T, *_T2, _N - 1);				\
+	if (_C < *_c) {							\
+		NULL_CHECK(vec_realloc(T, _T2, _N - 1));		\
+		*_c = _C;						\
+	}								\
+	_r;								\
+})
+
+#define vec_pop_auto(T, v2) 						\
+({ 									\
+	vec(T) **_T3 = (v2);						\
+	ssize_t _N = vec_length(T, *_T3);				\
+	ssize_t _cap = vec_capacity_auto(_N);				\
+	vec_pop_cap(T, &_cap, _T3);					\
+})
+
+
+
+#ifndef _clang_
 #define noplate_qsort(ptr, N, si, cmp, data) qsort_r(ptr, N, si, cmp, data)
 #else
 #ifdef CLOSURE_TYPE
@@ -113,17 +197,17 @@ extern void noplate_qsort(void* ptr, size_t N, size_t si, noplate_qsort_cmp_func
 
 #define vec_sort(T, v2, cmp)						\
 ({									\
- 	auto __T1 = (v2);						\
-	typedef vec_eltype(T, __T1) __ET;				\
-	_Static_assert(same_type_unq_p(T, __ET), "");			\
-	struct { int CLOSURE_TYPE(xcmp)(const __ET*, const __ET*); }	\
-		__d = { (cmp) };					\
-	NESTED(int, __cmp, (const void* a, const void* b, void* _d))	\
+	auto _T1 = (v2);						\
+	typedef vec_eltype(T, _T1) _ET;					\
+	_Static_assert(same_type_unq_p(T, _ET), "");			\
+	struct { int CLOSURE_TYPE(xcmp)(const _ET*, const _ET*); }	\
+		_d2 = { (cmp) };					\
+	NESTED(int, _cmp, (const void* a, const void* b, void* _d))	\
 	{								\
-		typeof(__d)* d = _d;					\
-		return d->xcmp((const __ET*)a, (const __ET*)b);		\
+		typeof(_d2)* d = _d;					\
+		return d->xcmp(a, b);					\
 	};								\
-	noplate_qsort(__T1->data, __T1->N, sizeof(__ET), __cmp, &__d);	\
+	noplate_qsort(_T1->data, _T1->N, sizeof(_ET), _cmp, &_d2);	\
 })
 
 #endif
