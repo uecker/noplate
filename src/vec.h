@@ -115,7 +115,7 @@ inline ssize_t vec_capacity_auto(ssize_t x)
 #define vec_alloc(T) (vec_alloc_n(T, 0))
 
 
-#if (GCC_VERSION >= 110300) || defined _clang_
+#if (GCC_VERSION >= 110300) || defined __clang__
 #define vec2array(T, x) \
 (*({									\
 	auto _x = (x);							\
@@ -129,7 +129,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 #define vec2array(T, x)							\
 (*(({									\
 	auto _x = (x);							\
-	_Static_assert(same_type_unq_p(T, (vec_eltype(T, _x)), "");	\
+	_Static_assert(same_type_unq_p(T, vec_eltype(T, _x)), "");	\
 	vec_array_tmp.N = _x->N;					\
 	vec_array_tmp.data = _x->data;					\
 }), (vec_eltype(T, x)(*)[vec_array_tmp.N])(vec_array_tmp.data)))
@@ -186,7 +186,7 @@ extern _Thread_local struct vec_a { ssize_t N; const void* data; } vec_array_tmp
 
 
 
-#ifndef _clang_
+#ifndef __clang__
 #define noplate_qsort(ptr, N, si, cmp, data) qsort_r(ptr, N, si, cmp, data)
 #else
 #ifdef CLOSURE_TYPE
