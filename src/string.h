@@ -3,8 +3,8 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef __STRING_H
-#define __STRING_H
+#ifndef _NOPLATE_STRING_H
+#define _NOPLATE_STRING_H
 
 #include "vec.h"
 #include "span.h"
@@ -80,5 +80,5 @@ extern void string_append_view(string * restrict *a, const strview b);
 extern string *strview_dup(const strview v);
 extern string *strview_concat(const strview a, const strview b);
 
-#endif // __STRING_H
+#endif // _NOPLATE_STRING_H
 

@@ -3,8 +3,8 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef __SPAN_H
-#define __SPAN_H 1
+#ifndef _NOPLATE_SPAN_H
+#define _NOPLATE_SPAN_H 1
 
 #include "core.h"
 

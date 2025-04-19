@@ -3,8 +3,8 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef _MDARRAY_H
-#define _MDARRAY_H	1
+#ifndef _NOPLATE_MDARRAY_H
+#define _NOPLATE_MDARRAY_H	1
 
 #include "array.h"
 
@@ -51,6 +51,6 @@ struct _mdarray_error { char c; };
 // FIXME
 #define mdarray_init(R, T, X) 		(mdarray(R, T)){ (void*)&X, array_dims(R, (X)) }
 
-#endif	// _MDARRAY_H
+#endif	// _NOPLATE_MDARRAY_H
 
 

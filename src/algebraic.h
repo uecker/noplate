@@ -1,6 +1,6 @@
 
-#ifndef __ALGEBRAIC_H
-#define __ALGEBRAIC_H	1
+#ifndef _NOPLATE_ALGEBRAIC_H
+#define _NOPLATE_ALGEBRAIC_H	1
 
 #include "core.h"
 
@@ -52,5 +52,5 @@
 
 
 
-#endif // __ALGEBRAIC_H
+#endif // _NOPLATE_ALGEBRAIC_H
 

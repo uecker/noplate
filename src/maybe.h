@@ -1,6 +1,6 @@
 
-#ifndef __MAYBE_H
-#define __MAYBE_H	1
+#ifndef _NOPLATE_MAYBE_H
+#define _NOPLATE_MAYBE_H	1
 
 #include "core.h"
 
@@ -16,5 +16,5 @@
 #define maybe_fail(T)		(maybe(T)){ .value = (T){ 0 }, .ok = false }
 #define maybe_just(T, x)	(*({ maybe(T) *__p = &(x); __p->ok ? &__p->value : (void*)0; }))
 
-#endif	// __MAYBE_H
+#endif	// _NOPLATE_MAYBE_H
 

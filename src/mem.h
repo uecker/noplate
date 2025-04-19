@@ -1,6 +1,6 @@
 
-#ifndef _LDST_H
-#define _LDST_H	1
+#ifndef _NOPLATE_MEM_H
+#define _NOPLATE_MEM_H	1
 
 #include "core.h"
 
@@ -31,5 +31,5 @@
 })
 
 
-#endif // _LDST_H
+#endif // _NOPLATE_MEM_H
 

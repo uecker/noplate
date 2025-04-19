@@ -3,8 +3,8 @@
  * a BSD-style license which can be found in the LICENSE file.
  * */
 
-#ifndef __LIST_H
-#define __LIST_H 1
+#ifndef _NOPLATE_LIST_H
+#define _NOPLATE_LIST_H 1
 
 #include <stdlib.h>
 #include <stdbool.h>
