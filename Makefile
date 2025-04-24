@@ -13,10 +13,6 @@ else
 CFLAGS += -fsanitize=vla-bound,bounds-strict,null,signed-integer-overflow -fsanitize-undefined-trap-on-error
 endif
 
-ifeq ($(TAGCOMPAT),1)
-CFLAGS += -DTAGCOMPAT -ftag-compat
-endif
-
 CPPFLAGS= -iquote ./src/
 
 SRCS = $(wildcard src/*.c)
