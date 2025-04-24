@@ -43,7 +43,7 @@ a pointer.
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/Gbn6xe8Tb
+https://godbolt.org/z/Pa896s9GP
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
