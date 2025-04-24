@@ -5,18 +5,24 @@ noplate library
 *experimental* generic type-safe container data structures for C
 
 
-Generic types provided are: vector, list, product, sum, and
-maybe. The generic types are based on structures defined in
-macros. They take typedef names as arguments and define a
-generic container with this element type:
+Generic types provided are: vec, span, list, product, sum, and
+maybe.  There is also a string type build on top of it, facilities
+for safe slicing of arrays, and for storing the byte representation
+of types in a buffer. The generic types are based on structures defined
+in macros. They take typedef names as arguments and define a generic
+container with this element type. For example:
 
 vec(int)* vi; // pointer to a vector of ints
 
 
+Note that the type argument must be a single identifier, i.e. to
+use it with more complicated types, a typedef name must be defined
+first.
+
 There is also support for arrays and strings. Arrays are just
 regular C arrays but we provide functions such as array_slice
 that perform bounds checking. A string is a vector of char
-with null-termination.
+which also has null-termination.
 
 
 All container types preserve information about the type of
@@ -29,15 +35,17 @@ Interoperability works by providing access to the underlying
 elements. For example, vec_access provides access to an
 lvalue for the underlying element of a vector and vec2array
 provides access to an array representing the complete vector.
-This array is a VLA, so accesses are also checked when using
-UBSan. A string type is defined as vector of char with
-null termination. The underlying array can be passed as
-an argument to C functions, because the array decays to
-a pointer.
+See example 9 how where a span is created from a vector and
+a pointer to the underlying array is passed to a C function.
 
+Array views constructed by vec2array or span2array are VLAs,
+so accesses are bounds-checked when using UBSan. A string
+type is defined as vector of char with null termination. The
+underlying array can be passed as an argument to C functions,
+because the array decays to a pointer.
 
-
-(the need to declare the types upfront will go away with C23)
+Before C23, one has to add forward declarations of the types,
+e.g. vec_decl(int).
 
 
 Example 1 (vector of integers)
