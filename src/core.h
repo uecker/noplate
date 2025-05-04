@@ -14,7 +14,7 @@
 #endif
 
 #if __STDC_VERSION__ >= 202000
-#if (GCC_VERSION >= 140000) && !defined __clang__
+#if (GCC_VERSION >= 140000) || (__clang_major__ > 20)
 #define TAGCOMPAT
 #endif
 #endif
