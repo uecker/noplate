@@ -51,7 +51,7 @@ e.g. vec_decl(int).
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/Pa896s9GP
+https://godbolt.org/z/oK5P31bzG
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -69,7 +69,7 @@ https://godbolt.org/z/Pa896s9GP
 Example 2 (span)
 ----------------
 
-https://godbolt.org/z/v1r5EWv8b
+https://godbolt.org/z/r3WbhdYfc
 
     void sum(span(int) v)
     {
@@ -110,7 +110,7 @@ Example 4 (strview)
 Example 5 (maybe)
 -----------------
 
-https://godbolt.org/z/sPKchv8TY
+https://godbolt.org/z/bocqjKb73
 
     maybe(int) divide(int a, int b)
     {
@@ -121,7 +121,7 @@ https://godbolt.org/z/sPKchv8TY
 Example 6 (product and sum)
 ------------------------------
 
-https://godbolt.org/z/oYEEz1MGj
+https://godbolt.org/z/jMe8dsxcM
 
     typedef product(int, float) product_name(int, float);
     typedef product(int, int) product_name(int, int);
@@ -178,7 +178,7 @@ https://godbolt.org/z/YqnKTT6ds
 Example 9 (span + slice)
 ------------------------
 
-https://godbolt.org/z/TcYrG8sWs
+https://godbolt.org/z/fb61Gr9sf
 
 
 Example 10 (byte-level loads and stores)
@@ -194,5 +194,5 @@ https://godbolt.org/z/xeYfn17zG
 Example 11 (preorder tree traversal)
 ------------------------------------
 
-https://godbolt.org/z/Ph8d6q3o9
+https://godbolt.org/z/rrdE4ce1T
 
