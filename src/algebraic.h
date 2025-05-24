@@ -32,24 +32,23 @@
 
 #define sum_init(S, T, x)					\
 ({ 								\
-	auto __x = (x);	 					\
-	sum(S, T) __n;						\
-	*_Generic(__x, 						\
-		typeof(__n.car): (__n.sel = false, &__n.car),	\
-		typeof(__n.cdr): (__n.sel = true, &__n.cdr)	\
-	) = __x;						\
-	__n;							\
+	auto _x = (x);	 					\
+	sum(S, T) _n;						\
+	*_Generic(_x, 						\
+		typeof(_n.car): (_n.sel = false, &_n.car),	\
+		typeof(_n.cdr): (_n.sel = true, &_n.cdr)	\
+	) = _x;							\
+	_n;							\
 })
 
-#define __sum_car(id, x)	({ auto id = (x); CHECK(!id.sel); id.car; })
-#define __sum_cdr(id, x)	({ auto id = (x); CHECK( id.sel); id.cdr; })
+#define _sum_car(id, x)	({ auto id = (x); CHECK(!id.sel); id.car; })
+#define _sum_cdr(id, x)	({ auto id = (x); CHECK( id.sel); id.cdr; })
 
-#define sum_car(x)		__sum_car(__UNIQ, x)
-#define sum_cdr(x)		__sum_cdr(__UNIQ, x)
+#define sum_car(x)		_sum_car(__UNIQ, x)
+#define sum_cdr(x)		_sum_cdr(__UNIQ, x)
 
-#define sum_choice(x, f, g)	({ auto id = (x); (!id.sel) ? (f((sum_car(id)))) : (g((sum_cdr(id)))); })
-
-
+#define _sum_choice(id, x, f, g)	({ auto id = (x); (!id.sel) ? (f((sum_car(id)))) : (g((sum_cdr(id)))); })
+#define sum_choice(x, f, g)		_sum_choice(__UNIQ, x, f, g)
 
 
 #endif // _NOPLATE_ALGEBRAIC_H

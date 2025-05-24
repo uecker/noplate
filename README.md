@@ -51,7 +51,7 @@ e.g. vec_decl(int).
 Example 1 (vector of integers)
 ------------------------------
 
-https://godbolt.org/z/oK5P31bzG
+https://godbolt.org/z/4n7vE3jTh
 
 	vec_decl(int);
 	vec(int)* v = vec_alloc(int);
@@ -69,7 +69,7 @@ https://godbolt.org/z/oK5P31bzG
 Example 2 (span)
 ----------------
 
-https://godbolt.org/z/r3WbhdYfc
+https://godbolt.org/z/TvxseshGc
 
     void sum(span(int) v)
     {
@@ -110,7 +110,7 @@ Example 4 (strview)
 Example 5 (maybe)
 -----------------
 
-https://godbolt.org/z/bocqjKb73
+https://godbolt.org/z/3WsWzfcKK
 
     maybe(int) divide(int a, int b)
     {
@@ -121,18 +121,24 @@ https://godbolt.org/z/bocqjKb73
 Example 6 (product and sum)
 ------------------------------
 
-https://godbolt.org/z/jMe8dsxcM
+https://godbolt.org/z/9bh6sPc3K
 
     typedef product(int, float) product_name(int, float);
-    typedef product(int, int) product_name(int, int);
 
 	auto ifl = product_init(int, float, (3, 0.1));
-	auto si = sum_init(product_name(int, float), string_ptr, ifl);
+	auto si = sum_init(product_name(int, float), int, ifl);
 
-	NESTED(int, add1, (product(int, float) ifl)) { return product_car(ifl) + 1; };
-	NESTED(int, slen, (string_ptr x)) { return (int)string_length(x); };
+	NESTED(int, add1, (product(int, float) ifl))
+    {
+        return product_car(ifl) + 1;
+    };
 
-	int si2 = sum_choice(si, add1, slen);
+	NESTED(int, id, (int x))
+    {
+        return x;
+    };
+
+	int si2 = sum_choice(si, add1, id);
 
 	assert(4 == si2);
 
@@ -178,7 +184,7 @@ https://godbolt.org/z/YqnKTT6ds
 Example 9 (span + slice)
 ------------------------
 
-https://godbolt.org/z/fb61Gr9sf
+https://godbolt.org/z/hjMaM3K3Y
 
 
 Example 10 (byte-level loads and stores)
@@ -194,5 +200,5 @@ https://godbolt.org/z/xeYfn17zG
 Example 11 (preorder tree traversal)
 ------------------------------------
 
-https://godbolt.org/z/rrdE4ce1T
+https://godbolt.org/z/sjbT453dM
 
