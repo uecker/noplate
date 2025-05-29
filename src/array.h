@@ -7,6 +7,10 @@
 #include "core.h"
 
 #define array(T, N) typeof(typeof(T)[N])
+
+#if (GCC_VERSION >= 160000) && !defined __clang__
+#define array_lengthof(x) _Countof(x)
+#else
 #define array_lengthof(x) 					\
 (sizeof *({ 							\
 	auto __x = &(x);					\
@@ -14,7 +18,7 @@
 	char (*__tmp)[(sizeof(*__x) / sizeof((*__x)[0]))] = 0;	\
 	__tmp;							\
 }))
-	
+#endif
 
 #define array_slice(x, start, end)				\
 (*({								\
