@@ -187,7 +187,14 @@ Example 9 (span + slice)
 https://godbolt.org/z/hjMaM3K3Y
 
 
-Example 10 (byte-level loads and stores)
+Example 10 (variadic)
+---------------------
+
+https://godbolt.org/z/E6cMMr8vx
+
+
+
+Example 11 (byte-level loads and stores)
 ---------------------------------------
 
 https://godbolt.org/z/xeYfn17zG
@@ -197,8 +204,11 @@ https://godbolt.org/z/xeYfn17zG
     int i = peek(int, &buf);
 
 
-Example 11 (preorder tree traversal)
+Example 12 (preorder tree traversal)
 ------------------------------------
 
 https://godbolt.org/z/sjbT453dM
+
+
+
 
