@@ -9,6 +9,8 @@
 
 variadic_decl(int);
 
+struct variadic_id variadic_id_int;	// for github
+
 void test_variadic()
 {
 	variadic *v = variadic_make(int, 3);
