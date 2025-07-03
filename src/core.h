@@ -25,6 +25,8 @@
 #define COUNTED_BY(N)
 #endif
 
+#define _STRINGIFY(x) #x
+#define STRINGIFY(x) _STRINGIFY(x)
 
 #define _CONCAT1(A, B) A ## B
 #define CONCAT(A, B) _CONCAT1(A, B)
