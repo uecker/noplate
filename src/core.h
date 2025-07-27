@@ -94,7 +94,9 @@
 // -fsanitize=bounds,null
 #define CHECK(x)
 #else
+#ifndef CHECK
 #define CHECK(x) if (!(x)) abort()
+#endif
 #endif
 
 extern void xfree(const void*);
