@@ -14,17 +14,17 @@ maybe_decl(int);
 
 void test_maybe()
 {
-	maybe(int) m = maybe_fail(int);
+	maybe(int) m = maybe_nothing(int);
 
 	if (m.ok)
 		abort();
 
-	m = maybe_ok(int, 3);
+	m = maybe_just(int, 3);
 
 	if (!m.ok) 
 		abort();
 
-	if (3 != maybe_just(int, m))
+	if (3 != maybe_value(int, m))
 		abort();
 }
 
