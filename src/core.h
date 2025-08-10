@@ -58,9 +58,9 @@
 #define literal(T, x) NODECL(enum _LIT : typeof(T) { _V = (x) })
 
 //#define nil(T) (*((typeof(T)*){ 0 }))
-#define same_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
-#define same_type_unq_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, const typeof(T)*: 1, default: 0)
-#define has_type_p(T, x) _Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
+#define same_type_p(T, x)	_Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
+#define same_type_unq_p(T, x)	_Generic(nil(typeof(x)*), typeof(T)*: 1, const typeof(T)*: 1, default: 0)
+#define has_type_p(T, x)	_Generic(nil(typeof(x)*), typeof(T)*: 1, default: 0)
 
 // seems to work on both clang and gcc
 #define lvalue_convert(x) ((void)0, x)

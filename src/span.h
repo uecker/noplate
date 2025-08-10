@@ -9,10 +9,10 @@
 #include "core.h"
 
 #ifdef TAGCOMPAT
-#define span(T) struct CONCAT(span_, T) { ssize_t N; T* data; }
+#define span(T) struct span_##T { ssize_t N; T* data; }
 #define span_decl(T)
 #else
-#define span(T) struct CONCAT(span_, T)
+#define span(T) struct span_##T
 #define span_decl(T) span(T) { ssize_t N; T* data; }
 #endif
 

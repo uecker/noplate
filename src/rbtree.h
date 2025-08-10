@@ -4,17 +4,17 @@
 #include "core.h"
 
 #ifndef TAGCOMPAT
-#define rbtree_node(T) struct CONCAT(rbtree_node_, T)
+#define rbtree_node(T) struct rbtree_node_##T
 #define rbtree_node_decl(T) rbtree_node(T) { struct rb3_head head; T data; }
 
-#define rbtree(T) struct CONCAT(rbtree_, T)
+#define rbtree(T) struct rbtree_##T
 #define rbtree_decl(T) rbtree_node_decl(T); rbtree(T) { struct rb3_tree tree; rb3_cmp* compare; rbtree_node(T) type[]; }
 #else
-#define rbtree_node(T) struct CONCAT(rbtree_node_, T) { struct rb3_head head; T data; }
+#define rbtree_node(T) struct rbtree_node_##T { struct rb3_head head; T data; }
 #define rbtree_node_decl(T) 
 
 #define rbtree_decl(T) 
-#define rbtree(T) struct CONCAT(rbtree_, T) { struct rb3_tree tree; rb3_cmp* compare; rbtree_node(T) type[]; }
+#define rbtree(T) struct rbtree_##T { struct rb3_tree tree; rb3_cmp* compare; rbtree_node(T) type[]; }
 #endif
 
 #define rbtree_eltype(l) typeof((l)->type[0].data)

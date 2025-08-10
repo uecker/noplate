@@ -4,10 +4,10 @@
 typedef struct variadic_id { const char *typeid; } variadic;
 
 #ifdef TAGCOMPAT
-#define variadic(T) struct CONCAT(val_, T) { variadic super; T value; }
+#define variadic(T) struct val_##T { variadic super; T value; }
 #define variadic_decl(T)
 #else
-#define variadic(T) struct CONCAT(val_, T)
+#define variadic(T) struct val_##T
 #define variadic_decl(T) variadic(T) { variadic super; T value; }
 #endif
 
