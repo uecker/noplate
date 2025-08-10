@@ -3,7 +3,7 @@
 # a BSD-style license which can be found in the LICENSE file.
 
 CC ?= gcc
-CFLAGS = -O2 -g -std=gnu23 -Wall -Wextra  -D_GNU_SOURCE
+CFLAGS = -O2 -g -std=gnu2x -Wall -Wextra  -D_GNU_SOURCE
 LDFLAGS =
 
 ifeq ($(findstring clang,$(CC)),clang)
