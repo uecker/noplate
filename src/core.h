@@ -86,6 +86,8 @@
 #define __block
 #endif
 
+#define lambda(R, args, ...) ({ NESTED(typeof(R), _lambda, args) { return (__VA_ARGS__); }; _lambda; })
+
 #define __CONCAT0(x, y) x ## y
 #define __CONCAT1(x, y) __CONCAT0(x, y)
 #define __UNIQ CONCAT(__x,  __COUNTER__)
