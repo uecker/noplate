@@ -1,9 +1,9 @@
-# Copyright 2021-2023. Martin Uecker
+# Copyright 2021-2025. Martin Uecker
 # All rights reserved. Use of this source code is governed by
 # a BSD-style license which can be found in the LICENSE file.
 
 CC ?= gcc
-CFLAGS = -O2 -g -std=gnu17 -Wall -Wextra  -D_GNU_SOURCE
+CFLAGS = -O2 -g -std=gnu23 -Wall -Wextra  -D_GNU_SOURCE
 LDFLAGS =
 
 ifeq ($(findstring clang,$(CC)),clang)
