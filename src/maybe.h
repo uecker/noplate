@@ -5,7 +5,7 @@
 #include "core.h"
 
 #ifdef TAGCOMPAT
-#ifdef __GNUC__
+#ifndef __clang__
 #define maybe(T) struct maybe_##T { bool ok; T value [[gnu::unavailable("privat")]]; }
 #else
 #define maybe(T) struct maybe_##T { bool ok; T value; }
