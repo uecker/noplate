@@ -22,6 +22,7 @@
 #define maybe_nothing(T)	(maybe(T)){ .value = (T){ 0 }, .ok = false }
 #define maybe_value(T, x)	(*({ maybe_priv(T) *__p = &(x); __p->ok ? &__p->value : (void*)0; }))
 
+#define maybe_comp(R, T, f)	lambda(maybe(R), (maybe(T) a), a.ok ? (f)(maybe_value(T, a)) : maybe_nothing(R))
 #define maybe_map(R, T, f)	lambda(maybe(R), (maybe(T) a), a.ok ? maybe_just(R, (f)(maybe_value(T, a))) : maybe_nothing(R))
 
 #endif	// _NOPLATE_MAYBE_H
