@@ -5,7 +5,11 @@
 #include "core.h"
 
 #ifdef TAGCOMPAT
+#ifdef __GNUC__
 #define maybe(T) struct maybe_##T { bool ok; T value [[gnu::unavailable("privat")]]; }
+#else
+#define maybe(T) struct maybe_##T { bool ok; T value; }
+#endif
 #define maybe_priv(T) struct maybe_##T { bool ok; T value; }
 #define maybe_decl(T)
 #else
