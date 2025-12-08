@@ -1,4 +1,8 @@
 
+
+NOTE: This projected moved to https://codeberg.org/uecker/noplate/.
+
+
 noplate library
 ===============
 
